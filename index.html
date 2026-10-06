@@ -40,6 +40,10 @@
   --sidebar-w: 264px;
 
   --shadow-pop: 0 12px 32px rgba(15,23,42,.14);
+
+  --elev-1: 0 1px 2px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.06);
+  --elev-2: 0 2px 6px rgba(15,23,42,.06), 0 12px 28px rgba(15,23,42,.08);
+  --elev-rail: 0 4px 18px rgba(15,23,42,.05);
 }
 
 body.dark {
@@ -65,6 +69,10 @@ body.dark {
   --fav:         #FBBF24;
 
   --shadow-pop:  0 12px 32px rgba(0,0,0,.55);
+
+  --elev-1: 0 1px 2px rgba(0,0,0,.4), 0 4px 12px rgba(0,0,0,.35);
+  --elev-2: 0 2px 6px rgba(0,0,0,.4), 0 12px 28px rgba(0,0,0,.45);
+  --elev-rail: 0 4px 18px rgba(0,0,0,.35);
 }
 
 /* =========================================================
@@ -111,6 +119,7 @@ input, select, textarea { font-family: inherit; }
   align-items: center;
   gap: 16px;
   padding: 0 22px;
+  box-shadow: 0 2px 8px rgba(15,23,42,.12);
 }
 
 .topbar__crest {
@@ -180,6 +189,7 @@ input, select, textarea { font-family: inherit; }
   align-items: center;
   padding: 0 22px;
   gap: 20px;
+  box-shadow: 0 2px 6px rgba(15,23,42,.04);
   transition: background-color .2s, border-color .2s;
 }
 
@@ -267,6 +277,7 @@ input, select, textarea { font-family: inherit; }
   border-right: 1px solid var(--border);
   overflow-y: auto;
   overflow-x: hidden;
+  box-shadow: var(--elev-rail);
   transition: transform .24s ease, background-color .2s, border-color .2s;
   display: flex;
   flex-direction: column;
@@ -466,6 +477,7 @@ body.dark .sidebar__foot {
   margin-bottom: 12px;
   border: 1px solid transparent;
   overflow-wrap: break-word;
+  box-shadow: var(--elev-1);
 }
 
 .banner--info {
@@ -492,21 +504,27 @@ body.dark .banner--success { background: rgba(22,163,74,.16); color: #A7F3C5; bo
 body.dark .banner--warning { background: rgba(220,38,38,.16); color: #FFB8B8; border-color: transparent; }
 
 /* =========================================================
-   8. CARD
+   8. CARD — ELEVATED
    ========================================================= */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-md);
   padding: 18px 20px 20px;
   margin-bottom: 16px;
   overflow: hidden;
   max-width: 100%;
-  transition: background-color .2s, border-color .2s;
+  box-shadow: var(--elev-1);
+  transition: background-color .2s, border-color .2s, box-shadow .25s;
   animation: cardEnter .45s cubic-bezier(.4,0,.2,1) backwards;
 }
 
-body.dark .card { border-color: transparent; box-shadow: 0 1px 0 rgba(255,255,255,.04); }
+body.dark .card {
+  border-color: transparent;
+  box-shadow: var(--elev-1);
+}
+
+.card:hover { box-shadow: var(--elev-2); }
 
 @keyframes cardEnter {
   from { opacity: 0; transform: translateY(14px); }
@@ -772,14 +790,10 @@ body.dark .dash-hero { border-bottom-color: rgba(255,255,255,.06); }
   position: relative;
   border-radius: 50%;
   background: var(--brand-light);
-  color: var(--brand-text);
-  animation: floatY 3.4s ease-in-out infinite;
+  overflow: hidden;
 }
 
-body.dark .dash-hero__icon {
-  background: rgba(23,163,152,.16);
-  color: var(--brand-text);
-}
+body.dark .dash-hero__icon { background: rgba(23,163,152,.16); }
 
 .dash-hero__icon::before,
 .dash-hero__icon::after {
@@ -789,6 +803,7 @@ body.dark .dash-hero__icon {
   border-radius: 50%;
   border: 2px solid var(--brand);
   opacity: 0;
+  pointer-events: none;
   animation: pulseRing 3s cubic-bezier(.4,0,.2,1) infinite;
 }
 
@@ -800,30 +815,88 @@ body.dark .dash-hero__icon {
   100% { transform: scale(1.35); opacity: 0; }
 }
 
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
+.dash-hero__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
 }
 
-.dash-hero__icon svg {
-  width: 40px; height: 40px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.6;
+.dash-hero__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(14px) scale(.85);
+  animation-duration: 16s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(.4,0,.2,1);
+  animation-fill-mode: both;
+}
+
+.dash-hero__face svg {
+  width: 46px; height: 46px;
   stroke-linecap: round;
   stroke-linejoin: round;
-  position: relative;
-  z-index: 1;
+  overflow: visible;
+}
+
+.dash-hero__face--compass { animation-name: morphFace; animation-delay: 0s; }
+.dash-hero__face--cap     { animation-name: morphFace; animation-delay: 4s; }
+.dash-hero__face--books   { animation-name: morphFace; animation-delay: 8s; }
+.dash-hero__face--pencil  { animation-name: morphFace; animation-delay: 12s; }
+
+@keyframes morphFace {
+  0%   { opacity: 0; transform: translateY(14px)  scale(.85); }
+  6%   { opacity: 1; transform: translateY(0)     scale(1); }
+  19%  { opacity: 1; transform: translateY(0)     scale(1); }
+  25%  { opacity: 0; transform: translateY(-14px) scale(.85); }
+  100% { opacity: 0; transform: translateY(-14px) scale(.85); }
 }
 
 .dash-hero__needle {
   transform-origin: 12px 12px;
-  animation: needleSweep 6s ease-in-out infinite;
+  animation: needleSweep 4s ease-in-out infinite;
 }
 
 @keyframes needleSweep {
-  0%, 45%   { transform: rotate(0deg); }
-  55%, 100% { transform: rotate(35deg); }
+  0%, 40%   { transform: rotate(0deg); }
+  60%, 100% { transform: rotate(35deg); }
+}
+
+.dash-hero__cap-float {
+  animation: capFloat 2s ease-in-out infinite;
+  transform-origin: 12px 14px;
+}
+
+@keyframes capFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+.dash-hero__page {
+  transform-origin: 6px 12px;
+  animation: pageFlip 2.4s ease-in-out infinite;
+  transform-box: fill-box;
+}
+
+@keyframes pageFlip {
+  0%, 100% { transform: rotateY(0deg); opacity: 1; }
+  50%      { transform: rotateY(-25deg); opacity: .7; }
+}
+
+.dash-hero__pencil-line {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  animation: pencilWrite 2.6s ease-in-out infinite;
+}
+
+@keyframes pencilWrite {
+  0%   { stroke-dashoffset: 20; }
+  70%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
 }
 
 .dash-hero__text {
@@ -885,20 +958,25 @@ body.dark .dash-hero__text p { color: var(--text-2); }
   margin-left: 2px;
 }
 
-/* ---------- Stats — centered, no backgrounds, single horizontal row ---------- */
+/* ---------- Stats — single flex row, always horizontal, centered ---------- */
 .stats.stats--animated {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: space-between;
   gap: 0;
   margin: 0;
+  padding: 0;
 }
 
 .stats.stats--animated > div {
-  padding: 12px 20px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 12px 10px;
   background: transparent;
   border: 0;
   border-radius: 0;
-  min-width: 0;
   position: relative;
   text-align: center;
   animation: statEnter .55s cubic-bezier(.34,1.56,.64,1) backwards;
@@ -915,12 +993,15 @@ body.dark .dash-hero__text p { color: var(--text-2); }
 
 .stats.stats--animated dt {
   margin: 0 0 6px;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--text-2);
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stats.stats--animated dd {
@@ -936,7 +1017,7 @@ body.dark .dash-hero__text p { color: var(--text-2); }
 .stat-number { display: inline-block; }
 
 /* =========================================================
-   11. SUPPORT TABLE (no icons)
+   11. SUPPORT TABLE
    ========================================================= */
 .support-service {
   font-weight: 700;
@@ -1063,7 +1144,6 @@ body.dark .list-row { border-color: rgba(255,255,255,.08); }
 
 body.dark .list-row__meta { color: var(--text-2); }
 
-/* Badge — plain text only, no background, in both modes */
 .list-row__badge {
   flex: 0 0 auto;
   padding: 0;
@@ -1218,7 +1298,6 @@ body.dark tbody tr:hover { background: rgba(255,255,255,.04); }
 .bld-code-cell { font-size: 13.5px; font-weight: 700; color: var(--text-3); }
 body.dark .bld-code-cell { color: var(--text-2); }
 
-/* STAT PILLS — plain text only, no background, in both modes */
 .stat-pill {
   display: inline-flex;
   align-items: center;
@@ -1293,6 +1372,11 @@ body.dark .empty-state { background: rgba(255,255,255,.03); border-color: rgba(2
   background: var(--brand-light);
   color: var(--brand);
   animation: floatY 3.4s ease-in-out infinite;
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
 
 body.dark .empty-state__icon { color: var(--brand-text); }
@@ -2033,7 +2117,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   .venue-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   .dash-hero__icon { width: 68px; height: 68px; }
-  .dash-hero__icon svg { width: 32px; height: 32px; }
+  .dash-hero__face svg { width: 36px; height: 36px; }
 }
 
 @media (max-width: 700px) {
@@ -2076,10 +2160,13 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   thead th { font-size: 12.5px; }
   tbody td { font-size: 14px; }
 
-  .stats.stats--animated { grid-template-columns: 1fr; gap: 8px; }
-  .stats.stats--animated > div { padding: 10px 16px; }
-  .stats.stats--animated dd { font-size: 26px; }
-  .stats.stats--animated dt { font-size: 12.5px; }
+  .stats.stats--animated {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .stats.stats--animated > div { padding: 8px 4px; }
+  .stats.stats--animated dd { font-size: 20px; }
+  .stats.stats--animated dt { font-size: 10.5px; letter-spacing: 0.3px; }
 
   .welcome-text { font-size: 15.5px; }
   .venue-detail__title h3 { font-size: 17px; }
@@ -2120,6 +2207,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     padding: 0 !important;
     margin: 0 !important;
     max-width: 100% !important;
+    box-shadow: none !important;
   }
 
   .venue-detail__head { border-bottom: 2px solid #000 !important; padding-bottom: 12px !important; }
@@ -2224,14 +2312,84 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
     <div class="dash-hero">
       <div class="dash-hero__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <g class="dash-hero__needle">
-            <path d="M12 6v3M12 15v3" stroke-width="1.6"/>
-            <path d="M12 12 L15.5 8.5" stroke-width="1.8"/>
-          </g>
-          <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
-        </svg>
+        <div class="dash-hero__stage">
+
+          <!-- Compass -->
+          <div class="dash-hero__face dash-hero__face--compass">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9.2" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="1.4"/>
+              <circle cx="12" cy="12" r="7" fill="#FFFFFF" stroke="#3B82F6" stroke-width="0.8" opacity="0.9"/>
+              <path d="M12 4.6v1.4M12 18v1.4M4.6 12h1.4M18 12h1.4"
+                    stroke="#1E3A8A" stroke-width="1.1" stroke-linecap="round"/>
+              <g class="dash-hero__needle">
+                <polygon points="12,6.8 13.4,12 12,12" fill="#DC2626"/>
+                <polygon points="12,6.8 10.6,12 12,12" fill="#F87171"/>
+                <polygon points="12,17.2 13.4,12 12,12" fill="#1E3A8A"/>
+                <polygon points="12,17.2 10.6,12 12,12" fill="#3B82F6"/>
+              </g>
+              <circle cx="12" cy="12" r="1.4" fill="#F59E0B" stroke="#78350F" stroke-width="0.4"/>
+            </svg>
+          </div>
+
+          <!-- Graduation Cap -->
+          <div class="dash-hero__face dash-hero__face--cap">
+            <svg viewBox="0 0 24 24">
+              <g class="dash-hero__cap-float">
+                <path d="M6 12v3.2c0 1.5 2.7 2.7 6 2.7s6-1.2 6-2.7V12Z"
+                      fill="#1E293B" stroke="#0F172A" stroke-width="0.6"/>
+                <path d="M2.2 9 12 4.6 21.8 9 12 13.4Z"
+                      fill="#0F172A" stroke="#020617" stroke-width="0.6"/>
+                <path d="M4.5 9 12 5.6 19.5 9"
+                      stroke="#334155" stroke-width="0.4" fill="none"/>
+                <path d="M21.6 9v5.4" stroke="#F59E0B" stroke-width="1.1"
+                      stroke-linecap="round" fill="none"/>
+                <circle cx="21.6" cy="14.6" r="0.9" fill="#F59E0B" stroke="#B45309" stroke-width="0.3"/>
+                <path d="M21.6 15.5v1.4M21.1 15.5v1.2M22.1 15.5v1.2"
+                      stroke="#F59E0B" stroke-width="0.5" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Books -->
+          <div class="dash-hero__face dash-hero__face--books">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4h6.2a1.8 1.8 0 0 1 1.8 1.8v13.4a1.8 1.8 0 0 0-1.8-1.8H4Z"
+                    fill="#DC2626" stroke="#991B1B" stroke-width="0.6"/>
+              <path d="M20 4h-6.2A1.8 1.8 0 0 0 12 5.8v13.4a1.8 1.8 0 0 1 1.8-1.8H20Z"
+                    fill="#1E40AF" stroke="#1E3A8A" stroke-width="0.6"/>
+              <path d="M4 4v15.2" stroke="#7F1D1D" stroke-width="0.5"/>
+              <path d="M20 4v15.2" stroke="#0F1E5C" stroke-width="0.5"/>
+              <g class="dash-hero__page">
+                <path d="M6 7.5h3.4M6 10h3.4M6 12.5h3.4M6 15h3.4"
+                      stroke="#FEF3C7" stroke-width="0.7" stroke-linecap="round"/>
+              </g>
+              <path d="M14.6 7.5H18M14.6 10H18M14.6 12.5H18M14.6 15H18"
+                    stroke="#DBEAFE" stroke-width="0.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Pencil -->
+          <div class="dash-hero__face dash-hero__face--pencil">
+            <svg viewBox="0 0 24 24">
+              <path d="M15.4 3.6l5 5-2.2 2.2-5-5Z"
+                    fill="#F472B6" stroke="#BE185D" stroke-width="0.5"/>
+              <path d="M13.4 5.6l5 5-1 1-5-5Z"
+                    fill="#CBD5E1" stroke="#64748B" stroke-width="0.4"/>
+              <path d="M12.4 6.6l5 5-8.4 8.4H4v-5Z"
+                    fill="#FBBF24" stroke="#B45309" stroke-width="0.5"/>
+              <path d="M7.5 11.5l5 5"
+                    stroke="#F59E0B" stroke-width="0.4" opacity="0.6"/>
+              <path d="M4 15l5 5H4Z"
+                    fill="#D97706" stroke="#78350F" stroke-width="0.4"/>
+              <path d="M4 18.6l1.4 1.4H4Z"
+                    fill="#0F172A"/>
+              <path class="dash-hero__pencil-line"
+                    d="M3 21.2h16"
+                    stroke="#17A398" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+
+        </div>
       </div>
 
       <div class="dash-hero__text">
@@ -2510,45 +2668,51 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   }
 
   /* =========================================================
-     BUILDING DATA
+     BUILDING DATA  —  with colorName derived from building code
      ========================================================= */
   var BUILDINGS = [
-    { id:"academic", name:"Academic Block", code:"BLD-ACD", color:"#2563EB",
+    { id:"academic", name:"Academic Block", code:"BLD-ACD",
+      color:"#2563EB", colorName:"ACD Royal Blue",
       desc:"Lecture theatres and tutorial rooms for the main campus.",
       floors:{
         "Ground Floor": codeRange("LR", "G", 20),
         "First Floor":  codeRange("LR", "1", 20),
         "Second Floor": codeRange("LR", "2", 20)
       }},
-    { id:"admin", name:"Administration Block", code:"BLD-ADM", color:"#7C3AED",
+    { id:"admin", name:"Administration Block", code:"BLD-ADM",
+      color:"#7C3AED", colorName:"ADM Imperial Purple",
       desc:"Registry, finance, admissions and administrative offices.",
       floors:{
         "Ground Floor": codeRange("ADM", "G", 20),
         "First Floor":  codeRange("ADM", "1", 20),
         "Second Floor": codeRange("ADM", "2", 20)
       }},
-    { id:"library", name:"Library Block", code:"BLD-LIB", color:"#D97706",
+    { id:"library", name:"Library Block", code:"BLD-LIB",
+      color:"#D97706", colorName:"LIB Amber Gold",
       desc:"Reading rooms, reference section and the digital resource centre.",
       floors:{
         "Ground Floor": codeRange("LIB", "G", 20),
         "First Floor":  codeRange("LIB", "1", 20),
         "Second Floor": codeRange("LIB", "2", 20)
       }},
-    { id:"workshop", name:"Workshop Wing", code:"BLD-WKS", color:"#DC2626",
+    { id:"workshop", name:"Workshop Wing", code:"BLD-WKS",
+      color:"#DC2626", colorName:"WKS Crimson Red",
       desc:"Engineering workshops and technical laboratories.",
       floors:{
         "Ground Floor": codeRange("WKS", "G", 20),
         "First Floor":  codeRange("WKS", "1", 20),
         "Second Floor": codeRange("WKS", "2", 20)
       }},
-    { id:"coste", name:"COSTE Wing", code:"BLD-CST", color:"#EA580C",
+    { id:"coste", name:"COSTE Wing", code:"BLD-CST",
+      color:"#EA580C", colorName:"CST Sunset Orange",
       desc:"Computer labs and lecture rooms for the college.",
       floors:{
         "Ground Floor": codeRange("CLR", "G", 20),
         "First Floor":  codeRange("CLR", "1", 20),
         "Second Floor": codeRange("CLR", "2", 20)
       }},
-    { id:"estate", name:"Estate Wing", code:"BLD-EST", color:"#059669",
+    { id:"estate", name:"Estate Wing", code:"BLD-EST",
+      color:"#059669", colorName:"EST Emerald Green",
       desc:"Estate department offices and maintenance stores.",
       floors:{
         "Ground Floor": codeRange("EST", "G", 20),
@@ -2569,6 +2733,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
           buildingId: b.id,
           buildingName: b.name,
           buildingColor: b.color,
+          buildingColorName: b.colorName,
           floor: floor
         });
       });
@@ -2991,7 +3156,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
               '</a>' +
               '<div class="nav-children">' +
                 BUILDINGS.map(function (b) {
-                  return '<a class="nav-child" data-nav="building" data-b="' + b.id + '">' +
+                  return '<a class="nav-child" data-nav="building" data-b="' + b.id + '" ' +
+                              'title="' + esc(b.colorName) + '">' +
                            esc(b.name) +
                          '</a>';
                 }).join("") +
@@ -3079,7 +3245,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       var fc = countFloors(b);
       var rc = countVenues(b);
       return '' +
-        '<tr>' +
+        '<tr title="' + esc(b.colorName) + '">' +
           '<td class="bld-name-cell">' + esc(b.name) + '</td>' +
           '<td class="bld-code-cell">' + esc(b.code) + '</td>' +
           '<td><span class="stat-pill stat-pill--floors">' + fc + ' floors</span></td>' +
@@ -3227,6 +3393,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
     el.detailBadge.style.background = b.color;
     el.detailBadge.textContent = b.code.split("-")[1];
+    el.detailBadge.setAttribute("title", b.colorName);
 
     el.detailTitle.textContent = b.name;
     el.detailSub.textContent = b.desc + " · " + floors.length + " floors · " + countVenues(b) + " venues";
@@ -3302,6 +3469,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     el.venueBadge.textContent = v.name;
     el.venueBadge.style.background = v.buildingColor + "1A";
     el.venueBadge.style.color = v.buildingColor;
+    el.venueBadge.setAttribute("title", v.buildingColorName);
 
     el.venueName.textContent = v.name;
     el.venueSub.textContent = v.buildingName + " · " + v.floor;
@@ -3712,7 +3880,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     renderOftenVisited();
     renderFavourites();
 
-    /* Dashboard count-up animation */
     animateDashboardStats();
 
     el.sidebarNav.addEventListener("click", handleSidebarClick);
