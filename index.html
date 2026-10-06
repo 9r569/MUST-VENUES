@@ -272,54 +272,9 @@ input, select, textarea { font-family: inherit; }
   flex-direction: column;
 }
 
-.sidebar__brand {
-  background: var(--brand);
-  color: #FFFFFF;
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 0 0 auto;
-}
-
-.sidebar__brand-icon {
-  width: 40px; height: 40px;
-  border-radius: 9px;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.28);
-  display: grid; place-items: center;
-  flex: 0 0 auto;
-}
-
-.sidebar__brand-icon svg {
-  width: 22px; height: 22px;
-  stroke: #FFFFFF; fill: none;
-  stroke-width: 1.9;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-
-.sidebar__brand-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-
-.sidebar__brand-text strong {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  line-height: 1.2;
-}
-
-.sidebar__brand-text span {
-  font-size: 12px;
-  opacity: 0.9;
-}
-
 .sidebar__nav {
   flex: 1 1 auto;
-  padding: 12px 12px 20px;
+  padding: 18px 12px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -335,7 +290,7 @@ input, select, textarea { font-family: inherit; }
 
 body.dark .nav-section { color: var(--text-3); }
 
-.sidebar__nav > .nav-section:first-child { padding-top: 4px; }
+.sidebar__nav > .nav-section:first-child { padding-top: 0; }
 
 .nav-item {
   display: flex;
@@ -547,8 +502,6 @@ body.dark .banner--warning { background: rgba(220,38,38,.16); color: #FFB8B8; bo
   margin-bottom: 16px;
   overflow: hidden;
   max-width: 100%;
-  border-bottom: 1px solid #B8BDC5;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
   transition: background-color .2s, border-color .2s;
   animation: cardEnter .45s cubic-bezier(.4,0,.2,1) backwards;
 }
@@ -606,7 +559,6 @@ body.dark .card { border-color: transparent; box-shadow: 0 1px 0 rgba(255,255,25
   display: flex;
   align-items: center;
   min-width: 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
 }
 
 .search-field svg {
@@ -800,7 +752,6 @@ body.dark .recent-list li { background: rgba(255,255,255,.08); border-color: tra
    10. DASHBOARD CARD
    ========================================================= */
 
-/* Hero block */
 .dash-hero {
   display: flex;
   align-items: center;
@@ -934,33 +885,24 @@ body.dark .dash-hero__text p { color: var(--text-2); }
   margin-left: 2px;
 }
 
-/* ---------- Stats — TABLE-LIKE single horizontal row, left to right ---------- */
+/* ---------- Stats — centered, no backgrounds, single horizontal row ---------- */
 .stats.stats--animated {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
   margin: 0;
 }
 
-body.dark .stats.stats--animated { border-color: rgba(255,255,255,.08); }
-
 .stats.stats--animated > div {
-  padding: 20px 22px;
-  border-right: 1px solid var(--border-soft);
+  padding: 12px 20px;
   background: transparent;
+  border: 0;
   border-radius: 0;
   min-width: 0;
   position: relative;
-  text-align: left;
-  transition: background-color .25s;
+  text-align: center;
   animation: statEnter .55s cubic-bezier(.34,1.56,.64,1) backwards;
 }
-
-body.dark .stats.stats--animated > div { border-right-color: rgba(255,255,255,.08); }
-
-.stats.stats--animated > div:last-child { border-right: 0; }
 
 .stats.stats--animated > div:nth-child(1) { animation-delay: .20s; }
 .stats.stats--animated > div:nth-child(2) { animation-delay: .32s; }
@@ -971,17 +913,14 @@ body.dark .stats.stats--animated > div { border-right-color: rgba(255,255,255,.0
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.stats.stats--animated > div:hover { background: var(--brand-light); }
-body.dark .stats.stats--animated > div:hover { background: rgba(23,163,152,.10); }
-
 .stats.stats--animated dt {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   color: var(--text-2);
-  text-align: left;
+  text-align: center;
 }
 
 .stats.stats--animated dd {
@@ -991,40 +930,19 @@ body.dark .stats.stats--animated > div:hover { background: rgba(23,163,152,.10);
   color: var(--brand-text);
   font-variant-numeric: tabular-nums;
   line-height: 1.05;
-  text-align: left;
+  text-align: center;
 }
 
 .stat-number { display: inline-block; }
 
 /* =========================================================
-   11. SUPPORT + CALENDAR TABLE HELPERS
+   11. SUPPORT TABLE (no icons)
    ========================================================= */
 .support-service {
-  display: inline-flex;
-  align-items: center;
-  gap: 11px;
   font-weight: 700;
   color: var(--text);
   font-size: 15px;
-  min-width: 0;
-}
-
-.support-service__icon {
-  width: 34px; height: 34px;
-  flex: 0 0 auto;
-  display: grid; place-items: center;
-  border-radius: 8px;
-  background: var(--brand-light);
-  color: var(--brand-text);
-}
-
-body.dark .support-service__icon { background: rgba(23,163,152,.22); color: var(--brand-text); }
-
-.support-service__icon svg {
-  width: 17px; height: 17px;
-  stroke: currentColor; fill: none;
-  stroke-width: 1.9;
-  stroke-linecap: round; stroke-linejoin: round;
+  overflow-wrap: break-word;
 }
 
 .cal-period {
@@ -1145,14 +1063,16 @@ body.dark .list-row { border-color: rgba(255,255,255,.08); }
 
 body.dark .list-row__meta { color: var(--text-2); }
 
+/* Badge — plain text only, no background, in both modes */
 .list-row__badge {
   flex: 0 0 auto;
-  padding: 3px 10px;
-  background: var(--brand-light);
-  color: var(--brand-text);
-  border-radius: 12px;
-  font-size: 12.5px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 13px;
   font-weight: 700;
+  color: var(--brand-text);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1298,22 +1218,25 @@ body.dark tbody tr:hover { background: rgba(255,255,255,.04); }
 .bld-code-cell { font-size: 13.5px; font-weight: 700; color: var(--text-3); }
 body.dark .bld-code-cell { color: var(--text-2); }
 
+/* STAT PILLS — plain text only, no background, in both modes */
 .stat-pill {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 11px;
-  border-radius: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
   font-size: 13px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.stat-pill--floors { background: #EEF2FF; color: #3730A3; }
-.stat-pill--rooms  { background: #ECFDF5; color: #065F46; }
-body.dark .stat-pill--floors { background: rgba(99,102,241,.22); color: #C7CBFF; }
-body.dark .stat-pill--rooms  { background: rgba(16,185,129,.20); color: #A7F3D0; }
+.stat-pill--floors { color: #3730A3; }
+.stat-pill--rooms  { color: #065F46; }
+
+body.dark .stat-pill--floors { color: #A5B4FC; }
+body.dark .stat-pill--rooms  { color: #6EE7B7; }
 
 .action-link {
   color: var(--brand);
@@ -2119,9 +2042,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   .venue-qr-panel { flex-direction: column; text-align: center; }
   .venue-qr-panel img { width: 100px; height: 100px; }
 
-  .support-service { font-size: 14px; gap: 9px; }
-  .support-service__icon { width: 30px; height: 30px; }
-
   .nav-child { padding-left: 22px; padding-right: 12px; }
 
   .dash-hero { flex-direction: column; text-align: center; gap: 14px; }
@@ -2156,7 +2076,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   thead th { font-size: 12.5px; }
   tbody td { font-size: 14px; }
 
-  .stats.stats--animated > div { padding: 14px 16px; }
+  .stats.stats--animated { grid-template-columns: 1fr; gap: 8px; }
+  .stats.stats--animated > div { padding: 10px 16px; }
   .stats.stats--animated dd { font-size: 26px; }
   .stats.stats--animated dt { font-size: 12.5px; }
 
@@ -2249,15 +2170,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar__brand">
-    <div class="sidebar__brand-icon">
-      <svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
-    </div>
-    <div class="sidebar__brand-text">
-      <strong>MAIN CAMPUS</strong>
-      <span>Venue Directory</span>
-    </div>
-  </div>
   <nav class="sidebar__nav" id="sidebarNav"></nav>
   <div class="sidebar__foot">© 2026 MUST · ICT</div>
 </aside>
@@ -2270,7 +2182,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     <span>Directory sync : 01 Oct 2026, 09:14</span>
   </div>
 
-  <div class="banner banner--success">Must Venue loaded successfully.</div>
+  <div class="banner banner--success">Venue directory loaded successfully.</div>
 
   <div class="banner banner--warning" id="warningBanner" hidden>
     No venues match the current filter.
@@ -2306,7 +2218,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   </section>
 
 
-  <!-- DASHBOARD CARD  —  ANIMATED -->
+  <!-- DASHBOARD CARD -->
   <section class="card">
     <h2 class="card__title">Dashboard</h2>
 
@@ -2323,7 +2235,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       </div>
 
       <div class="dash-hero__text">
-        <h3>Welcome again<span class="wave">👋</span></h3>
+        <h3>Welcome again, Erick <span class="wave">👋</span></h3>
         <p>
           Every lecture hall, laboratory, and library you walk into today is a step closer
           to the person you are becoming. Find your way, find your place, and never stop
@@ -2736,20 +2648,13 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
      STUDENT SUPPORT SERVICES
      ========================================================= */
   var SUPPORT_SERVICES = [
-    { title:"Counselling & Guidance", venue:"ADM 110",
-      icon:"M8 12h8M12 8v8M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0z" },
-    { title:"Health Services", venue:"EST G01",
-      icon:"M4 4h16v16H4zM9 12h6M12 9v6" },
-    { title:"Career Guidance & Placement", venue:"ADM 205",
-      icon:"M4 7h16v13H4zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" },
-    { title:"Financial Aid & Scholarships", venue:"ADM 108",
-      icon:"M12 3v18M6 7h9a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h10" },
-    { title:"Academic Advising", venue:"LIB 205",
-      icon:"M4 5h16v14H4zM8 9h8M8 13h5" },
-    { title:"International Students Desk", venue:"ADM 101",
-      icon:"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20" },
-    { title:"Library Help Desk", venue:"LIB G01",
-      icon:"M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16H6a2 2 0 0 1-2-2zM8 7h8M8 11h5" }
+    { title:"Counselling & Guidance", venue:"ADM 110" },
+    { title:"Health Services", venue:"EST G01" },
+    { title:"Career Guidance & Placement", venue:"ADM 205" },
+    { title:"Financial Aid & Scholarships", venue:"ADM 108" },
+    { title:"Academic Advising", venue:"LIB 205" },
+    { title:"International Students Desk", venue:"ADM 101" },
+    { title:"Library Help Desk", venue:"LIB G01" }
   ];
 
   /* =========================================================
@@ -2793,12 +2698,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       return '' +
         '<tr>' +
           '<td>' +
-            '<span class="support-service">' +
-              '<span class="support-service__icon">' +
-                '<svg viewBox="0 0 24 24"><path d="' + s.icon + '"/></svg>' +
-              '</span>' +
-              esc(s.title) +
-            '</span>' +
+            '<span class="support-service">' + esc(s.title) + '</span>' +
           '</td>' +
           '<td>' + esc(location) + '</td>' +
           '<td>' +
@@ -2862,7 +2762,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
     var totalFloors = BUILDINGS.reduce(function (s, b) { return s + countFloors(b); }, 0);
 
-    /* left to right: Buildings first, then Floors, then Venues */
     animateCount(bldEl, BUILDINGS.length, 1100);
     setTimeout(function () { animateCount(flrEl, totalFloors, 1200); }, 140);
     setTimeout(function () { animateCount(rmEl, VENUES.length, 1400); }, 280);
