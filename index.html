@@ -30,6 +30,8 @@
   --info:        #1E5FBF;
   --danger:      #C62828;
   --fav:         #F59E0B;
+  --notif:       #F59E0B;
+  --notif-hover: #D97706;
 
   --r-sm: 3px;
   --r-md: 4px;
@@ -67,6 +69,8 @@ body.dark {
   --info:        #79B8FF;
   --danger:      #FF8B8B;
   --fav:         #FBBF24;
+  --notif:       #FBBF24;
+  --notif-hover: #FB923C;
 
   --shadow-pop:  0 12px 32px rgba(0,0,0,.55);
 
@@ -237,6 +241,34 @@ input, select, textarea { font-family: inherit; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 
+/* ---------- Notification button — gold / fire flame, no border, no background ---------- */
+.icon-btn--notif {
+  border: none;
+  background: transparent;
+  color: var(--notif);
+  transition: color .2s, transform .2s;
+}
+
+.icon-btn--notif:hover {
+  border: none;
+  background: transparent;
+  color: var(--notif-hover);
+  transform: scale(1.08);
+}
+
+.icon-btn--notif svg {
+  transition: filter .25s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.icon-btn--notif:hover svg {
+  filter: drop-shadow(0 0 8px rgba(245,158,11,.55));
+}
+
+body.dark .icon-btn--notif:hover svg {
+  filter: drop-shadow(0 0 8px rgba(251,191,36,.6));
+}
+
 .logout {
   display: inline-flex;
   align-items: center;
@@ -399,6 +431,42 @@ body.dark .nav-item__chev { stroke: var(--text-3); }
 body.dark .theme-switch { background: var(--brand); }
 body.dark .theme-switch::after { transform: translateX(16px); }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--border-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  flex: 0 0 auto;
+}
+
+body.dark .lang-switch {
+  background: rgba(255,255,255,.06);
+  border-color: transparent;
+}
+
+.lang-switch__opt {
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  border-radius: 10px;
+  color: var(--text-3);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color .15s, color .15s;
+}
+
+.lang-switch__opt:hover { color: var(--text); }
+
+.lang-switch__opt.is-active {
+  background: var(--brand);
+  color: #FFFFFF;
+}
+
 .nav-children { display: none; margin: 0; padding: 0; }
 .nav-group.is-open .nav-children { display: block; }
 
@@ -484,14 +552,59 @@ body.dark .sidebar__foot {
   background: #E8F1FC;
   color: #1A4B8C;
   border-color: #D6E4F5;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  justify-content: space-between;
   font-weight: 700;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
 }
 
-body.dark .banner--info { background: rgba(88,166,255,.14); color: #C9E0FF; border-color: transparent; }
+body.dark .banner--info {
+  background: rgba(88,166,255,.14);
+  color: #C9E0FF;
+  border-color: transparent;
+}
+
+.banner--info__track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 32px;
+  align-items: center;
+  padding: 11px 0;
+  white-space: nowrap;
+  animation: marqueeSlide 22s linear infinite;
+  will-change: transform;
+}
+
+.banner--info:hover .banner--info__track {
+  animation-play-state: paused;
+}
+
+.banner--info__item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner--info__item .sep {
+  display: inline-block;
+  opacity: 0.5;
+  margin-inline: 4px;
+}
+
+.banner--info__label {
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.banner--info__value {
+  font-weight: 800;
+}
+
+@keyframes marqueeSlide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
 .banner--success { background: #DCFCE7; color: #166534; border-color: #BBF7D0; }
 body.dark .banner--success { background: rgba(22,163,74,.16); color: #A7F3C5; border-color: transparent; }
@@ -927,18 +1040,20 @@ body.dark .dash-hero__icon { background: rgba(23,163,152,.16); }
   50%           { transform: rotate(10deg); }
 }
 
-.dash-hero__text p {
+/* ---------- Typing quote (subtitle effect) ---------- */
+.dash-quote {
   margin: 0;
   font-size: 16px;
   line-height: 1.65;
   color: var(--text-2);
   max-width: 62ch;
   font-style: italic;
+  min-height: 3.3em; /* reserve space so layout doesn't jump while typing */
 }
 
-body.dark .dash-hero__text p { color: var(--text-2); }
+body.dark .dash-quote { color: var(--text-2); }
 
-.dash-hero__text p::before {
+.dash-quote::before {
   content: "\201C";
   font-size: 24px;
   line-height: 0;
@@ -948,7 +1063,7 @@ body.dark .dash-hero__text p { color: var(--text-2); }
   margin-right: 2px;
 }
 
-.dash-hero__text p::after {
+.dash-quote::after {
   content: "\201D";
   font-size: 24px;
   line-height: 0;
@@ -958,7 +1073,27 @@ body.dark .dash-hero__text p { color: var(--text-2); }
   margin-left: 2px;
 }
 
-/* ---------- Stats — single flex row, always horizontal, centered ---------- */
+/* The blinking subtitle cursor */
+.typing-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  font-weight: 400;
+  color: var(--brand);
+  font-style: normal;
+  animation: cursorBlink 1s steps(1, end) infinite;
+  transform: translateY(1px);
+}
+
+.typing-cursor.is-done {
+  animation: cursorBlink 1.2s steps(1, end) infinite;
+  opacity: .65;
+}
+
+@keyframes cursorBlink {
+  0%, 55%   { opacity: 1; }
+  55.01%, 100% { opacity: 0; }
+}
+
 .stats.stats--animated {
   display: flex;
   flex-direction: row;
@@ -1369,8 +1504,8 @@ body.dark .empty-state { background: rgba(255,255,255,.03); border-color: rgba(2
   margin: 0 auto 10px;
   display: grid; place-items: center;
   border-radius: 50%;
-  background: var(--brand-light);
-  color: var(--brand);
+  background: color-mix(in srgb, var(--notif) 15%, transparent);
+  color: var(--notif);
   animation: floatY 3.4s ease-in-out infinite;
 }
 
@@ -1378,8 +1513,6 @@ body.dark .empty-state { background: rgba(255,255,255,.03); border-color: rgba(2
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-6px); }
 }
-
-body.dark .empty-state__icon { color: var(--brand-text); }
 
 .empty-state__icon svg {
   width: 22px; height: 22px;
@@ -1928,6 +2061,20 @@ body.dark .venue-photo { background: rgba(255,255,255,.04); border-color: transp
 body.dark .venue-photo figcaption { border-color: rgba(255,255,255,.06); color: var(--text-2); }
 
 /* =========================================================
+   18b. NOTIFICATION CARD — hakuna border, hover, wala glow
+   ========================================================= */
+#notifCard,
+#notifCard:hover,
+#notifCard:focus,
+#notifCard:focus-within,
+#notifCard:active,
+#notifCard.is-target {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================
    19. FOOTER
    ========================================================= */
 .foot {
@@ -2130,9 +2277,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
   .dash-hero { flex-direction: column; text-align: center; gap: 14px; }
   .dash-hero__text h3 { font-size: 19px; }
-  .dash-hero__text p { font-size: 15px; }
-  .dash-hero__text p::before,
-  .dash-hero__text p::after { display: none; }
+  .dash-quote { font-size: 15px; }
+  .dash-quote::before,
+  .dash-quote::after { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -2160,19 +2307,18 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   thead th { font-size: 12.5px; }
   tbody td { font-size: 14px; }
 
-  .stats.stats--animated {
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
+  .stats.stats--animated { flex-direction: row; flex-wrap: nowrap; }
   .stats.stats--animated > div { padding: 8px 4px; }
   .stats.stats--animated dd { font-size: 20px; }
   .stats.stats--animated dt { font-size: 10.5px; letter-spacing: 0.3px; }
 
-  .welcome-text { font-size: 15.5px; }
+  .dash-quote { font-size: 15px; }
   .venue-detail__title h3 { font-size: 17px; }
   .venue-desc { font-size: 14.5px; padding: 14px; }
 
   .empty-state { padding: 26px 16px; font-size: 14px; }
+
+  .banner--info__track { animation-duration: 15s; padding-block: 10px; }
 
   .toast-container { top: auto; bottom: 16px; right: 14px; left: 14px; }
   .toast { min-width: 0; max-width: none; width: 100%; }
@@ -2237,21 +2383,21 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
 <div class="toolbar">
   <div class="crumbs">
-    <a href="#" data-nav="home">Home</a>
+    <a href="#" data-nav="home" data-i18n="toolbar.home">Home</a>
     <span class="sep">/</span>
-    <span>Venue Finder</span>
+    <span data-i18n="toolbar.venueFinder">Venue Finder</span>
     <span class="sep">/</span>
-    <span id="crumbCurrent">Dashboard</span>
+    <span id="crumbCurrent" data-i18n="toolbar.dashboard">Dashboard</span>
   </div>
 
   <div class="toolbar__actions">
-    <button class="icon-btn" aria-label="Notifications" title="Notifications">
+    <button class="icon-btn icon-btn--notif" id="notifBtn" data-i18n-title="toolbar.notifications" aria-label="Notifications">
       <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
     </button>
 
     <button class="logout">
       <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-      <span>Log out</span>
+      <span data-i18n="toolbar.logout">Log out</span>
     </button>
   </div>
 </div>
@@ -2259,47 +2405,49 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
 <aside class="sidebar" id="sidebar">
   <nav class="sidebar__nav" id="sidebarNav"></nav>
-  <div class="sidebar__foot">© 2026 MUST · ICT</div>
+  <div class="sidebar__foot" data-i18n="footer.sidebarFoot">© 2026 MUST · ICT</div>
 </aside>
 
 
 <main class="content">
 
-  <div class="banner banner--info">
-    <span>Active Academic Year : 2026/2027 – Semester I</span>
-    <span>Directory sync : 01 Oct 2026, 09:14</span>
+  <div class="banner banner--info" aria-label="Directory information">
+    <div class="banner--info__track" id="marqueeTrack"></div>
   </div>
 
-  <div class="banner banner--success">Venue directory loaded successfully.</div>
+  <div class="banner banner--success" id="statusBanner" data-i18n="banner.success">Venue directory loaded successfully.</div>
 
-  <div class="banner banner--warning" id="warningBanner" hidden>
+  <div class="banner banner--warning" id="warningBanner" hidden data-i18n="banner.warning">
     No venues match the current filter.
   </div>
 
 
   <!-- SEARCH CARD -->
   <section class="card">
-    <h2 class="card__title">Search Venues</h2>
+    <h2 class="card__title" data-i18n="search.title">Search Venues</h2>
 
     <div class="search-wrap">
       <div class="search-field">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
         <input id="searchInput" type="text"
+               data-i18n-placeholder="search.placeholder"
                placeholder="Search room code, building, or floor…"
                autocomplete="off" spellcheck="false">
       </div>
 
       <p class="search-hint">
-        Tip: press <kbd>Ctrl</kbd> + <kbd>K</kbd> to focus the search box from anywhere.
+        <span data-i18n="search.tipPrefix">Tip: press</span>
+        <kbd>Ctrl</kbd> + <kbd>K</kbd>
+        <span data-i18n="search.tipSuffix">to focus the search box from anywhere.</span>
       </p>
 
       <div class="recent-searches" id="recentSearches">
-        <div class="recent-searches__label">Recent searches</div>
+        <div class="recent-searches__label" data-i18n="search.recent">Recent searches</div>
         <ul class="recent-list" id="recentList"></ul>
       </div>
 
       <div class="search-results" id="searchResults">
-        <div class="search-results__label">Search results</div>
+        <div class="search-results__label" data-i18n="search.results">Search results</div>
         <ul class="result-list" id="resultList"></ul>
       </div>
     </div>
@@ -2308,13 +2456,12 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
   <!-- DASHBOARD CARD -->
   <section class="card">
-    <h2 class="card__title">Dashboard</h2>
+    <h2 class="card__title" data-i18n="dash.title">Dashboard</h2>
 
     <div class="dash-hero">
       <div class="dash-hero__icon" aria-hidden="true">
         <div class="dash-hero__stage">
 
-          <!-- Compass -->
           <div class="dash-hero__face dash-hero__face--compass">
             <svg viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="9.2" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="1.4"/>
@@ -2331,7 +2478,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
             </svg>
           </div>
 
-          <!-- Graduation Cap -->
           <div class="dash-hero__face dash-hero__face--cap">
             <svg viewBox="0 0 24 24">
               <g class="dash-hero__cap-float">
@@ -2350,7 +2496,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
             </svg>
           </div>
 
-          <!-- Books -->
           <div class="dash-hero__face dash-hero__face--books">
             <svg viewBox="0 0 24 24">
               <path d="M4 4h6.2a1.8 1.8 0 0 1 1.8 1.8v13.4a1.8 1.8 0 0 0-1.8-1.8H4Z"
@@ -2368,7 +2513,6 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
             </svg>
           </div>
 
-          <!-- Pencil -->
           <div class="dash-hero__face dash-hero__face--pencil">
             <svg viewBox="0 0 24 24">
               <path d="M15.4 3.6l5 5-2.2 2.2-5-5Z"
@@ -2393,26 +2537,27 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       </div>
 
       <div class="dash-hero__text">
-        <h3>Welcome again, Erick <span class="wave">👋</span></h3>
-        <p>
-          Every lecture hall, laboratory, and library you walk into today is a step closer
-          to the person you are becoming. Find your way, find your place, and never stop
-          learning — the world is waiting for what only you can bring.
+        <h3>
+          <span data-i18n="dash.welcome">Welcome again, Erick</span>
+          <span class="wave">👋</span>
+        </h3>
+        <p class="dash-quote" id="dashQuote">
+          <span id="quoteText"></span><span class="typing-cursor" id="typingCursor">▌</span>
         </p>
       </div>
     </div>
 
     <dl class="stats stats--animated">
       <div>
-        <dt>Buildings</dt>
+        <dt data-i18n="dash.buildings">Buildings</dt>
         <dd><span class="stat-number" id="statBld">0</span></dd>
       </div>
       <div>
-        <dt>Floors</dt>
+        <dt data-i18n="dash.floors">Floors</dt>
         <dd><span class="stat-number" id="statFlr">0</span></dd>
       </div>
       <div>
-        <dt>Venues</dt>
+        <dt data-i18n="dash.venues">Venues</dt>
         <dd><span class="stat-number" id="statRm">0</span></dd>
       </div>
     </dl>
@@ -2421,13 +2566,13 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
   <!-- STUDENT SUPPORT CARD -->
   <section class="card" id="supportCard">
-    <h2 class="card__title">Student Support Services</h2>
+    <h2 class="card__title" data-i18n="support.title">Student Support Services</h2>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:44%">Service</th>
-            <th>Location</th>
+            <th style="width:44%" data-i18n="support.service">Service</th>
+            <th data-i18n="support.location">Location</th>
             <th style="width:90px"></th>
           </tr>
         </thead>
@@ -2439,21 +2584,21 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
   <!-- ACADEMIC CALENDAR CARD -->
   <section class="card" id="calendarCard">
-    <h2 class="card__title">Academic Calendar — 2026/2027</h2>
+    <h2 class="card__title" data-i18n="cal.title">Academic Calendar — 2026/2027</h2>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:130px">Period</th>
-            <th>Event</th>
-            <th style="width:110px">Status</th>
+            <th style="width:130px" data-i18n="cal.period">Period</th>
+            <th data-i18n="cal.event">Event</th>
+            <th style="width:110px" data-i18n="cal.status">Status</th>
           </tr>
         </thead>
         <tbody id="calendarTableBody"></tbody>
       </table>
     </div>
-    <p class="footnote">
-      Kalenda imethibitishwa na Academic Office · Semester I na II
+    <p class="footnote" data-i18n="cal.footnote">
+      Calendar approved by the Academic Office · Semester I and II
     </p>
   </section>
 
@@ -2461,7 +2606,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   <!-- OFTEN VISITED CARD -->
   <section class="card" id="oftenCard">
     <h2 class="card__title card__title--row">
-      <span>Often Visited</span>
+      <span data-i18n="often.title">Often Visited</span>
       <span class="count-badge" id="oftenCount">0</span>
     </h2>
     <div id="oftenContainer"></div>
@@ -2471,17 +2616,18 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   <!-- MY FAVOURITE VENUES CARD -->
   <section class="card" id="favCard">
     <h2 class="card__title card__title--row">
-      <span>My Favourite Venues</span>
+      <span data-i18n="fav.title">My Favourite Venues</span>
       <span class="count-badge" id="favCount">0</span>
     </h2>
 
     <form class="fav-form" id="favForm" autocomplete="off">
       <div class="fav-form__field">
         <input id="favInput" type="text"
+               data-i18n-placeholder="fav.placeholder"
                placeholder="Add a venue code (e.g. CLR G01, LR 101)…"
                aria-label="Add a venue to favourites">
       </div>
-      <button class="fav-form__btn" type="submit">Add</button>
+      <button class="fav-form__btn" type="submit" data-i18n="fav.add">Add</button>
       <div class="fav-form__msg" id="favMsg" aria-live="polite"></div>
     </form>
 
@@ -2491,15 +2637,15 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
   <!-- BUILDINGS CARD -->
   <section class="card">
-    <h2 class="card__title">Buildings</h2>
+    <h2 class="card__title" data-i18n="bld.title">Buildings</h2>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:44%">Building</th>
-            <th>Code</th>
-            <th style="width:110px">Floors</th>
-            <th style="width:110px">Rooms</th>
+            <th style="width:44%" data-i18n="bld.building">Building</th>
+            <th data-i18n="bld.code">Code</th>
+            <th style="width:110px" data-i18n="bld.floors">Floors</th>
+            <th style="width:110px" data-i18n="bld.rooms">Rooms</th>
             <th style="width:90px"></th>
           </tr>
         </thead>
@@ -2517,7 +2663,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
         <h3 id="detailTitle">—</h3>
         <p id="detailSub">—</p>
       </div>
-      <button class="close-btn" id="detailClose">Close</button>
+      <button class="close-btn" id="detailClose" data-i18n="bd.close">Close</button>
     </div>
     <div id="detailFloors"></div>
   </section>
@@ -2531,20 +2677,20 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
         <h3 id="venueName">—</h3>
         <p id="venueSub">—</p>
       </div>
-      <button class="close-btn" id="venueClose">Close</button>
+      <button class="close-btn" id="venueClose" data-i18n="bd.close">Close</button>
     </div>
 
     <dl class="venue-info-grid">
       <div class="venue-info-item">
-        <dt>Building</dt>
+        <dt data-i18n="vd.building">Building</dt>
         <dd id="venueBuilding">—</dd>
       </div>
       <div class="venue-info-item">
-        <dt>Floor</dt>
+        <dt data-i18n="vd.floor">Floor</dt>
         <dd id="venueFloor">—</dd>
       </div>
       <div class="venue-info-item">
-        <dt>Path</dt>
+        <dt data-i18n="vd.path">Path</dt>
         <dd id="venuePath">—</dd>
       </div>
     </dl>
@@ -2554,75 +2700,75 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     <div class="venue-actions">
       <button class="venue-action-btn" id="venueShareBtn" type="button">
         <svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
-        Share
+        <span data-i18n="vd.share">Share</span>
       </button>
       <button class="venue-action-btn" id="venuePrintBtn" type="button">
         <svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
-        Print
+        <span data-i18n="vd.print">Print</span>
       </button>
     </div>
 
     <div class="venue-qr-panel">
       <img id="venueQrImg" alt="QR code for this venue" loading="lazy">
       <div class="venue-qr-panel__text">
-        <strong>Scan to open on your phone</strong>
-        <p>Point your camera at this code to open the same venue page on a mobile device. Useful for venue door labels and orientation week.</p>
+        <strong data-i18n="vd.scanTitle">Scan to open on your phone</strong>
+        <p data-i18n="vd.scanText">Point your camera at this code to open the same venue page on a mobile device. Useful for venue door labels and orientation week.</p>
       </div>
     </div>
 
-    <p class="venue-gallery__label">Photos of this venue</p>
+    <p class="venue-gallery__label" data-i18n="vd.photosLabel">Photos of this venue</p>
     <div class="venue-gallery" id="venueGallery"></div>
   </section>
 
 
-  <!-- NOTIFICATIONS CARD -->
-  <section class="card">
-    <h2 class="card__title">Notifications</h2>
-    <div class="sub-title">Recently Added Venues</div>
+  <!-- NOTIFICATIONS CARD  — target for the orange bell -->
+  <section class="card" id="notifCard">
+    <h2 class="card__title" data-i18n="notif.title">Notifications</h2>
+    <div class="sub-title" data-i18n="notif.subtitle">Recently Added Venues</div>
 
     <div class="empty-state">
       <div class="empty-state__icon">
         <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
       </div>
-      <strong>No notifications yet</strong>
-      New venue uploads from the Academic Office will appear here.
+      <strong data-i18n="notif.emptyTitle">No notifications yet</strong>
+      <span data-i18n="notif.emptyText">New venue uploads from the Academic Office will appear here.</span>
     </div>
   </section>
 
 
   <!-- NEWS CARD -->
   <section class="card" id="newsCard">
-    <h2 class="card__title">News</h2>
+    <h2 class="card__title" data-i18n="news.title">News</h2>
 
     <div class="news-item">
-      <span class="news-item__tag">important</span>
-      <h4>Venue directory updated for Semester I 2026/2027</h4>
-      <p>
+      <span class="news-item__tag" data-i18n="news.tagImportant">important</span>
+      <h4 data-i18n="news.n1.title">Venue directory updated for Semester I 2026/2027</h4>
+      <p data-i18n="news.n1.body">
         New venues have been added across all buildings, and floor layouts have been revised.
         Students are advised to verify their timetable against the updated directory before
         the start of teaching.
       </p>
-      <div class="news-item__meta">Posted by Academic Office · 28 September 2026</div>
+      <div class="news-item__meta" data-i18n="news.n1.meta">Posted by Academic Office · 28 September 2026</div>
     </div>
 
     <div class="news-item">
-      <span class="news-item__tag news-item__tag--notice">notice</span>
-      <h4>Maintenance works — Workshop Wing, Second Floor</h4>
-      <p>
+      <span class="news-item__tag news-item__tag--notice" data-i18n="news.tagNotice">notice</span>
+      <h4 data-i18n="news.n2.title">Maintenance works — Workshop Wing, Second Floor</h4>
+      <p data-i18n="news.n2.body">
         The Materials Laboratory will be closed for scheduled maintenance from 06 October to
         13 October 2026. Alternative venues have been arranged in the Academic Block.
       </p>
-      <div class="news-item__meta">Posted by Estate Department · 26 September 2026</div>
+      <div class="news-item__meta" data-i18n="news.n2.meta">Posted by Estate Department · 26 September 2026</div>
     </div>
   </section>
 
 
   <footer class="foot">
-    © 2026 MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY
+    <span data-i18n="footer.rights">© 2026 MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY</span>
     <span class="sep">|</span>
-    Design and Developed by ICT SOLUTIONS DESIGN
+    <span data-i18n="footer.design">Design and Developed by ICT SOLUTIONS DESIGN</span>
     <span class="sep">|</span>
-    Press <strong>?</strong> for keyboard shortcuts
+    <span data-i18n="footer.shortcutHint">Press ? for keyboard shortcuts</span>
   </footer>
 
 </main>
@@ -2632,16 +2778,16 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 <div class="modal-backdrop" id="shortcutsModal">
   <div class="modal" role="dialog" aria-labelledby="shortcutsTitle">
     <div class="modal__head">
-      <h3 id="shortcutsTitle">Keyboard shortcuts</h3>
+      <h3 id="shortcutsTitle" data-i18n="shortcuts.title">Keyboard shortcuts</h3>
       <button class="modal__close" type="button" data-close-modal aria-label="Close">×</button>
     </div>
     <div class="modal__body">
       <ul class="shortcut-list">
-        <li><span>Focus search</span><kbd>Ctrl + K</kbd></li>
-        <li><span>Close search / dialogs</span><kbd>Esc</kbd></li>
-        <li><span>Move through results</span><kbd>↑ ↓</kbd></li>
-        <li><span>Open selected result</span><kbd>Enter</kbd></li>
-        <li><span>Show this panel</span><kbd>?</kbd></li>
+        <li><span data-i18n="shortcuts.focus">Focus search</span><kbd>Ctrl + K</kbd></li>
+        <li><span data-i18n="shortcuts.close">Close search / dialogs</span><kbd>Esc</kbd></li>
+        <li><span data-i18n="shortcuts.move">Move through results</span><kbd>↑ ↓</kbd></li>
+        <li><span data-i18n="shortcuts.open">Open selected result</span><kbd>Enter</kbd></li>
+        <li><span data-i18n="shortcuts.show">Show this panel</span><kbd>?</kbd></li>
       </ul>
     </div>
   </div>
@@ -2657,6 +2803,680 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   "use strict";
 
   /* =========================================================
+     i18n
+     ========================================================= */
+  var I18N = {
+    en: {
+      'toolbar.home': 'Home',
+      'toolbar.venueFinder': 'Venue Finder',
+      'toolbar.dashboard': 'Dashboard',
+      'toolbar.logout': 'Log out',
+      'toolbar.notifications': 'Notifications',
+
+      'nav.overview': 'Overview',
+      'nav.dashboard': 'Dashboard',
+      'nav.allVenues': 'All Venues',
+      'nav.studentSupport': 'Student Support',
+      'nav.academicCalendar': 'Academic Calendar',
+      'nav.buildings': 'Buildings',
+      'nav.allBuildings': 'All Buildings',
+      'nav.account': 'Account',
+      'nav.myFavourites': 'My Favourites',
+      'nav.news': 'News',
+      'nav.settings': 'Settings',
+      'nav.darkMode': 'Dark mode',
+      'nav.language': 'Language',
+
+      'search.title': 'Search Venues',
+      'search.placeholder': 'Search room code, building, or floor…',
+      'search.tipPrefix': 'Tip: press',
+      'search.tipSuffix': 'to focus the search box from anywhere.',
+      'search.recent': 'Recent searches',
+      'search.results': 'Search results',
+      'search.noMatch': 'No venues match',
+      'search.locate': 'Locate',
+
+      'dash.title': 'Dashboard',
+      'dash.welcome': 'Welcome again, Erick',
+      'dash.quote': 'Every lecture hall, laboratory, and library you walk into today is a step closer to the person you are becoming. Find your way, find your place, and never stop learning — the world is waiting for what only you can bring.',
+      'dash.buildings': 'Buildings',
+      'dash.floors': 'Floors',
+      'dash.venues': 'Venues',
+
+      'support.title': 'Student Support Services',
+      'support.service': 'Service',
+      'support.location': 'Location',
+      'support.open': 'Open',
+      'sup.counselling': 'Counselling & Guidance',
+      'sup.health': 'Health Services',
+      'sup.career': 'Career Guidance & Placement',
+      'sup.financial': 'Financial Aid & Scholarships',
+      'sup.advising': 'Academic Advising',
+      'sup.international': 'International Students Desk',
+      'sup.library': 'Library Help Desk',
+
+      'cal.title': 'Academic Calendar — 2026/2027',
+      'cal.period': 'Period',
+      'cal.event': 'Event',
+      'cal.status': 'Status',
+      'cal.current': 'Current',
+      'cal.footnote': 'Calendar approved by the Academic Office · Semester I and II',
+      'cal.ev1.name': 'Semester I — Registration & Orientation',
+      'cal.ev1.note': 'Registration for all students and orientation for freshers.',
+      'cal.ev2.name': 'Teaching Period Begins',
+      'cal.ev2.note': 'Classes begin for the first semester.',
+      'cal.ev3.name': 'CAT 1 & Mid-Semester Assignments',
+      'cal.ev3.note': 'Continuous Assessment Test number one.',
+      'cal.ev4.name': 'Final Examinations — Semester I',
+      'cal.ev4.note': 'Final examinations for the first semester.',
+      'cal.ev5.name': 'End of Semester Break',
+      'cal.ev5.note': 'End of semester break.',
+      'cal.ev6.name': 'Semester II Begins',
+      'cal.ev6.note': 'Registration and start of the second semester.',
+      'cal.ev7.name': 'Mid-Semester Break',
+      'cal.ev7.note': 'Mid-semester break.',
+      'cal.ev8.name': 'Final Examinations — Semester II',
+      'cal.ev8.note': 'Final examinations of the academic year.',
+
+      'often.title': 'Often Visited',
+      'often.emptyTitle': 'No venues visited yet',
+      'often.emptyText': 'Open any venue from a building to start building your history here.',
+      'often.open': 'Open',
+      'often.visit': 'visit',
+      'often.visits': 'visits',
+
+      'fav.title': 'My Favourite Venues',
+      'fav.placeholder': 'Add a venue code (e.g. CLR G01, LR 101)…',
+      'fav.add': 'Add',
+      'fav.emptyTitle': 'No favourite venues yet',
+      'fav.emptyText': 'Add one above, or click the ☆ star on any room chip inside a building.',
+      'fav.locate': 'Locate',
+
+      'bld.title': 'Buildings',
+      'bld.building': 'Building',
+      'bld.code': 'Code',
+      'bld.floors': 'Floors',
+      'bld.rooms': 'Rooms',
+      'bld.floorWord': 'floor',
+      'bld.floorsWord': 'floors',
+      'bld.roomWord': 'room',
+      'bld.roomsWord': 'rooms',
+      'bld.venuesWord': 'venues',
+      'bld.open': 'Open',
+
+      'bd.close': 'Close',
+
+      'vd.building': 'Building',
+      'vd.floor': 'Floor',
+      'vd.path': 'Path',
+      'vd.share': 'Share',
+      'vd.print': 'Print',
+      'vd.scanTitle': 'Scan to open on your phone',
+      'vd.scanText': 'Point your camera at this code to open the same venue page on a mobile device. Useful for venue door labels and orientation week.',
+      'vd.photosLabel': 'Photos of this venue',
+      'vd.photoEntrance': 'Main entrance',
+      'vd.photoInterior': 'Interior view',
+      'vd.photoSeating': 'Seating area',
+
+      'notif.title': 'Notifications',
+      'notif.subtitle': 'Recently Added Venues',
+      'notif.emptyTitle': 'No notifications yet',
+      'notif.emptyText': 'New venue uploads from the Academic Office will appear here.',
+
+      'news.title': 'News',
+      'news.tagImportant': 'important',
+      'news.tagNotice': 'notice',
+      'news.n1.title': 'Venue directory updated for Semester I 2026/2027',
+      'news.n1.body': 'New venues have been added across all buildings, and floor layouts have been revised. Students are advised to verify their timetable against the updated directory before the start of teaching.',
+      'news.n1.meta': 'Posted by Academic Office · 28 September 2026',
+      'news.n2.title': 'Maintenance works — Workshop Wing, Second Floor',
+      'news.n2.body': 'The Materials Laboratory will be closed for scheduled maintenance from 06 October to 13 October 2026. Alternative venues have been arranged in the Academic Block.',
+      'news.n2.meta': 'Posted by Estate Department · 26 September 2026',
+
+      'footer.rights': '© 2026 MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY',
+      'footer.design': 'Design and Developed by ICT SOLUTIONS DESIGN',
+      'footer.shortcutHint': 'Press ? for keyboard shortcuts',
+      'footer.sidebarFoot': '© 2026 MUST · ICT',
+
+      'shortcuts.title': 'Keyboard shortcuts',
+      'shortcuts.focus': 'Focus search',
+      'shortcuts.close': 'Close search / dialogs',
+      'shortcuts.move': 'Move through results',
+      'shortcuts.open': 'Open selected result',
+      'shortcuts.show': 'Show this panel',
+
+      'banner.success': 'Venue directory loaded successfully.',
+      'banner.warning': 'No venues match the current filter.',
+
+      'marq.academicYear': 'Active Academic Year',
+      'marq.academicYearValue': '2026/2027 – Semester I',
+      'marq.directorySource': 'Directory Source',
+      'marq.directorySourceValue': 'Academic Office · ICT Directorate',
+      'marq.buildings': 'Buildings',
+      'marq.totalVenues': 'Total Venues',
+      'marq.support': 'Support',
+      'marq.supportValue': 'ICT Help Desk · LIB G01',
+      'marq.week': 'Week',
+      'marq.weekValue': 'Week {n} of the year',
+      'marq.quarter': 'Quarter',
+      'marq.quarterValue': 'Q{n} of the year',
+      'marq.timeOfDay': 'Time of day',
+      'marq.timeOfDayValue': 'It is {period}',
+      'marq.periodMorning': 'morning',
+      'marq.periodAfternoon': 'afternoon',
+      'marq.periodEvening': 'evening',
+      'marq.periodNight': 'night',
+
+      'toast.darkOn': 'Dark mode on',
+      'toast.lightOn': 'Light mode on',
+      'toast.linkCopied': 'Venue link copied to clipboard',
+      'toast.copyFailed': 'Could not copy link',
+      'toast.shareUnsupported': 'Sharing is not supported on this device',
+      'toast.venueNotFound': 'Venue not found',
+      'toast.addedFav': '{name} added to favourites',
+      'toast.removedFav': '{name} removed from favourites',
+      'toast.removedFromFav': 'Removed from favourites',
+      'toast.supportNotAvailable': 'Venue info not available for this service',
+
+      'favForm.notFound': 'No venue found with the code "{code}".',
+      'favForm.already': '{name} is already in your favourites.',
+      'favForm.added': '{name} added to favourites.',
+
+      'day.0': 'Sunday',
+      'day.1': 'Monday',
+      'day.2': 'Tuesday',
+      'day.3': 'Wednesday',
+      'day.4': 'Thursday',
+      'day.5': 'Friday',
+      'day.6': 'Saturday',
+      'month.0': 'January',
+      'month.1': 'February',
+      'month.2': 'March',
+      'month.3': 'April',
+      'month.4': 'May',
+      'month.5': 'June',
+      'month.6': 'July',
+      'month.7': 'August',
+      'month.8': 'September',
+      'month.9': 'October',
+      'month.10': 'November',
+      'month.11': 'December',
+
+      'bdesc.academic': 'Lecture theatres and tutorial rooms for the main campus.',
+      'bdesc.admin': 'Registry, finance, admissions and administrative offices.',
+      'bdesc.library': 'Reading rooms, reference section and the digital resource centre.',
+      'bdesc.workshop': 'Engineering workshops and technical laboratories.',
+      'bdesc.coste': 'Computer labs and lecture rooms for the college.',
+      'bdesc.estate': 'Estate department offices and maintenance stores.'
+    },
+
+    sw: {
+      'toolbar.home': 'Nyumbani',
+      'toolbar.venueFinder': 'Tafuta Venue',
+      'toolbar.dashboard': 'Dashibodi',
+      'toolbar.logout': 'Toka',
+      'toolbar.notifications': 'Taarifa',
+
+      'nav.overview': 'Muhtasari',
+      'nav.dashboard': 'Dashibodi',
+      'nav.allVenues': 'Venue Zote',
+      'nav.studentSupport': 'Msaada wa Wanafunzi',
+      'nav.academicCalendar': 'Kalenda ya Masomo',
+      'nav.buildings': 'Majengo',
+      'nav.allBuildings': 'Majengo Yote',
+      'nav.account': 'Akaunti',
+      'nav.myFavourites': 'Vipendwa Vyangu',
+      'nav.news': 'Habari',
+      'nav.settings': 'Mipangilio',
+      'nav.darkMode': 'Hali ya Usiku',
+      'nav.language': 'Lugha',
+
+      'search.title': 'Tafuta Venue',
+      'search.placeholder': 'Tafuta namba ya chumba, jengo, au floor…',
+      'search.tipPrefix': 'Kidokezo: bonyeza',
+      'search.tipSuffix': 'kufokus search kutoka mahali popote.',
+      'search.recent': 'Utafutaji wa hivi karibuni',
+      'search.results': 'Matokeo ya utafutaji',
+      'search.noMatch': 'Hakuna venue inayolingana na',
+      'search.locate': 'Nenda',
+
+      'dash.title': 'Dashibodi',
+      'dash.welcome': 'Karibu tena, Erick',
+      'dash.quote': 'Kila ukumbi wa mihadhara, maabara, na maktaba unaoingia leo ni hatua moja karibu zaidi na mtu unayekuwa. Tafuta njia yako, tafuta mahali pako, na usikate tamaa kujifunza — dunia inasubiri kile ambacho ni wewe tu unaweza kuleta.',
+      'dash.buildings': 'Majengo',
+      'dash.floors': 'Floors',
+      'dash.venues': 'Venue',
+
+      'support.title': 'Huduma za Msaada kwa Wanafunzi',
+      'support.service': 'Huduma',
+      'support.location': 'Mahali',
+      'support.open': 'Fungua',
+      'sup.counselling': 'Ushauri na Mwongozo',
+      'sup.health': 'Huduma za Afya',
+      'sup.career': 'Mwongozo wa Kazi na Uajiri',
+      'sup.financial': 'Msaada wa Fedha na Scholarship',
+      'sup.advising': 'Ushauri wa Kielimu',
+      'sup.international': 'Dawati la Wanafunzi wa Kimataifa',
+      'sup.library': 'Dawati la Msaada wa Maktaba',
+
+      'cal.title': 'Kalenda ya Masomo — 2026/2027',
+      'cal.period': 'Kipindi',
+      'cal.event': 'Tukio',
+      'cal.status': 'Hali',
+      'cal.current': 'Sasa',
+      'cal.footnote': 'Kalenda imethibitishwa na Academic Office · Semester I na II',
+      'cal.ev1.name': 'Semester I — Usajili na Orientation',
+      'cal.ev1.note': 'Usajili kwa wanafunzi wote na orientation ya freshers.',
+      'cal.ev2.name': 'Kipindi cha Kufundisha Kinaanza',
+      'cal.ev2.note': 'Madarasa yanaanza kwa semester ya kwanza.',
+      'cal.ev3.name': 'CAT 1 na Kazi za Katikati ya Semester',
+      'cal.ev3.note': 'Continuous Assessment Test ya kwanza.',
+      'cal.ev4.name': 'Mitihani ya Mwisho — Semester I',
+      'cal.ev4.note': 'Mitihani ya mwisho wa semester ya kwanza.',
+      'cal.ev5.name': 'Mapumziko ya Mwisho wa Semester',
+      'cal.ev5.note': 'Mapumziko ya mwisho wa semester.',
+      'cal.ev6.name': 'Semester II Inaanza',
+      'cal.ev6.note': 'Usajili na kuanza kwa semester ya pili.',
+      'cal.ev7.name': 'Mapumziko ya Katikati ya Semester',
+      'cal.ev7.note': 'Mapumziko ya katikati ya semester.',
+      'cal.ev8.name': 'Mitihani ya Mwisho — Semester II',
+      'cal.ev8.note': 'Mitihani ya mwisho wa mwaka wa masomo.',
+
+      'often.title': 'Zilizotembelewa Mara Nyingi',
+      'often.emptyTitle': 'Hakuna venue iliyotembelewa bado',
+      'often.emptyText': 'Fungua venue yoyote kutoka kwenye jengo ili kuanza kujenga historia yako hapa.',
+      'often.open': 'Fungua',
+      'often.visit': 'ziara',
+      'often.visits': 'ziara',
+
+      'fav.title': 'Venue Zangu Nipendazo',
+      'fav.placeholder': 'Ongeza namba ya venue (mf. CLR G01, LR 101)…',
+      'fav.add': 'Ongeza',
+      'fav.emptyTitle': 'Hakuna venue unayopenda bado',
+      'fav.emptyText': 'Ongeza moja juu, au bonyeza nyota ☆ kwenye chip yoyote ya chumba ndani ya jengo.',
+      'fav.locate': 'Nenda',
+
+      'bld.title': 'Majengo',
+      'bld.building': 'Jengo',
+      'bld.code': 'Kifupisho',
+      'bld.floors': 'Floors',
+      'bld.rooms': 'Vyumba',
+      'bld.floorWord': 'floor',
+      'bld.floorsWord': 'floors',
+      'bld.roomWord': 'chumba',
+      'bld.roomsWord': 'vyumba',
+      'bld.venuesWord': 'venue',
+      'bld.open': 'Fungua',
+
+      'bd.close': 'Funga',
+
+      'vd.building': 'Jengo',
+      'vd.floor': 'Floor',
+      'vd.path': 'Njia',
+      'vd.share': 'Shiriki',
+      'vd.print': 'Chapisha',
+      'vd.scanTitle': 'Scan kufungua kwenye simu yako',
+      'vd.scanText': 'Elekeza kamera yako kwenye code hii kufungua ukurasa huo wa venue kwenye simu. Inafaa kwa lebo za milango ya venue na wiki ya orientation.',
+      'vd.photosLabel': 'Picha za venue hii',
+      'vd.photoEntrance': 'Mlango mkuu',
+      'vd.photoInterior': 'Mwonekano wa ndani',
+      'vd.photoSeating': 'Eneo la kukaa',
+
+      'notif.title': 'Taarifa',
+      'notif.subtitle': 'Venue Zilizoongezwa Hivi Karibuni',
+      'notif.emptyTitle': 'Hakuna taarifa bado',
+      'notif.emptyText': 'Venue mpya kutoka Academic Office zitaonekana hapa.',
+
+      'news.title': 'Habari',
+      'news.tagImportant': 'muhimu',
+      'news.tagNotice': 'taarifa',
+      'news.n1.title': 'Orodha ya venue imehaririwa kwa Semester I 2026/2027',
+      'news.n1.body': 'Venue mpya zimeongezwa kwenye majengo yote, na mipangilio ya floors imerekebishwa. Wanafunzi wanashauriwa kuthibitisha ratiba zao kwa orodha iliyohaririwa kabla ya kuanza kwa kufundisha.',
+      'news.n1.meta': 'Iliyowekwa na Academic Office · 28 Septemba 2026',
+      'news.n2.title': 'Kazi za Matengenezo — Workshop Wing, Second Floor',
+      'news.n2.body': 'Materials Laboratory itafungwa kwa matengenezo yaliyopangwa kuanzia 06 Oktoba hadi 13 Oktoba 2026. Venue mbadala zimeandaliwa kwenye Academic Block.',
+      'news.n2.meta': 'Iliyowekwa na Estate Department · 26 Septemba 2026',
+
+      'footer.rights': '© 2026 CHUO KIKUU CHA SAYANSI NA TEKNOLOJIA MBEYA',
+      'footer.design': 'Imeundwa na ICT SOLUTIONS DESIGN',
+      'footer.shortcutHint': 'Bonyeza ? kwa njia za mkato',
+      'footer.sidebarFoot': '© 2026 MUST · ICT',
+
+      'shortcuts.title': 'Njia za mkato za kibodi',
+      'shortcuts.focus': 'Fokus search',
+      'shortcuts.close': 'Funga search / dialogs',
+      'shortcuts.move': 'Pitia kwenye matokeo',
+      'shortcuts.open': 'Fungua matokeo yaliyochaguliwa',
+      'shortcuts.show': 'Onyesha panel hii',
+
+      'banner.success': 'Orodha ya venue imepakiwa kikamilifu.',
+      'banner.warning': 'Hakuna venue inayolingana na filter ya sasa.',
+
+      'marq.academicYear': 'Mwaka wa Masomo',
+      'marq.academicYearValue': '2026/2027 – Semester I',
+      'marq.directorySource': 'Chanzo cha Orodha',
+      'marq.directorySourceValue': 'Academic Office · ICT Directorate',
+      'marq.buildings': 'Majengo',
+      'marq.totalVenues': 'Jumla ya Venue',
+      'marq.support': 'Msaada',
+      'marq.supportValue': 'ICT Help Desk · LIB G01',
+      'marq.week': 'Wiki',
+      'marq.weekValue': 'Wiki ya {n} ya mwaka',
+      'marq.quarter': 'Robo',
+      'marq.quarterValue': 'Robo ya {n} ya mwaka',
+      'marq.timeOfDay': 'Wakati',
+      'marq.timeOfDayValue': 'Ni {period}',
+      'marq.periodMorning': 'asubuhi',
+      'marq.periodAfternoon': 'mchana',
+      'marq.periodEvening': 'jioni',
+      'marq.periodNight': 'usiku',
+
+      'toast.darkOn': 'Hali ya usiku imewashwa',
+      'toast.lightOn': 'Hali ya mchana imewashwa',
+      'toast.linkCopied': 'Link ya venue imenakiliwa',
+      'toast.copyFailed': 'Imeshindwa kunakili link',
+      'toast.shareUnsupported': 'Kushiriki hakuungwa mkono kwenye kifaa hiki',
+      'toast.venueNotFound': 'Venue haipatikani',
+      'toast.addedFav': '{name} imeongezwa kwenye vipendwa',
+      'toast.removedFav': '{name} imeondolewa kwenye vipendwa',
+      'toast.removedFromFav': 'Imeondolewa kwenye vipendwa',
+      'toast.supportNotAvailable': 'Taarifa za venue hazipatikani kwa huduma hii',
+
+      'favForm.notFound': 'Hakuna venue iliyopatikana kwa namba "{code}".',
+      'favForm.already': '{name} tayari iko kwenye vipendwa vyako.',
+      'favForm.added': '{name} imeongezwa kwenye vipendwa.',
+
+      'day.0': 'Jumapili',
+      'day.1': 'Jumatatu',
+      'day.2': 'Jumanne',
+      'day.3': 'Jumatano',
+      'day.4': 'Alhamisi',
+      'day.5': 'Ijumaa',
+      'day.6': 'Jumamosi',
+      'month.0': 'Januari',
+      'month.1': 'Februari',
+      'month.2': 'Machi',
+      'month.3': 'Aprili',
+      'month.4': 'Mei',
+      'month.5': 'Juni',
+      'month.6': 'Julai',
+      'month.7': 'Agosti',
+      'month.8': 'Septemba',
+      'month.9': 'Oktoba',
+      'month.10': 'Novemba',
+      'month.11': 'Desemba',
+
+      'bdesc.academic': 'Ukumbi wa mihadhara na vyumba vya tutorials kwa campus kuu.',
+      'bdesc.admin': 'Usajili, fedha, uandikishaji na ofisi za utawala.',
+      'bdesc.library': 'Vyumba vya kusoma, sehemu ya reference na kituo cha rasilimali za kidijitali.',
+      'bdesc.workshop': 'Warsha za uhandisi na maabara za kiufundi.',
+      'bdesc.coste': 'Maabara za kompyuta na vyumba vya mihadhara vya chuo.',
+      'bdesc.estate': 'Ofisi za idara ya estate na bohari za matengenezo.'
+    }
+  };
+
+  var LANG_KEY = 'must:lang';
+  var currentLang = 'en';
+
+  function loadLang() {
+    try {
+      var l = localStorage.getItem(LANG_KEY);
+      currentLang = (l === 'sw') ? 'sw' : 'en';
+    } catch (e) { currentLang = 'en'; }
+  }
+
+  function t(key) {
+    var dict = I18N[currentLang] || I18N.en;
+    return dict[key] !== undefined ? dict[key] : (I18N.en[key] !== undefined ? I18N.en[key] : key);
+  }
+
+  function tf(key, vars) {
+    var s = t(key);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) { s = s.replace('{' + k + '}', vars[k]); });
+    }
+    return s;
+  }
+
+  function applyI18n() {
+    document.documentElement.setAttribute('lang', currentLang);
+
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      els[i].textContent = t(els[i].getAttribute('data-i18n'));
+    }
+
+    var phs = document.querySelectorAll('[data-i18n-placeholder]');
+    for (var j = 0; j < phs.length; j++) {
+      phs[j].setAttribute('placeholder', t(phs[j].getAttribute('data-i18n-placeholder')));
+    }
+
+    var tls = document.querySelectorAll('[data-i18n-title]');
+    for (var k = 0; k < tls.length; k++) {
+      tls[k].setAttribute('title', t(tls[k].getAttribute('data-i18n-title')));
+    }
+  }
+
+  function updateLangSwitchUI() {
+    var opts = document.querySelectorAll('.lang-switch__opt');
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].classList.toggle('is-active', opts[i].getAttribute('data-lang') === currentLang);
+    }
+  }
+
+  function setLang(lang) {
+    if (lang !== 'en' && lang !== 'sw') lang = 'en';
+    if (lang === currentLang) return;
+    currentLang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+
+    applyI18n();
+    paintMarquee();
+
+    renderSidebar();
+    renderBuildingsTable();
+    renderSupport();
+    renderCalendar();
+    renderOftenVisited();
+    renderFavourites();
+
+    setActiveNav(state.activeNav || 'home', state.activeBuilding || null);
+
+    if (el.detailCard) el.detailCard.classList.remove("is-open");
+    if (el.venueDetail) el.venueDetail.classList.remove("is-open");
+    if (el.crumbCurrent) el.crumbCurrent.textContent = t('toolbar.dashboard');
+    state.currentVenue = null;
+
+    /* Restart the typing quote in the new language */
+    startQuoteTyping();
+  }
+
+
+  /* =========================================================
+     QUOTE TYPING  —  subtitle-style typewriter (INFINITE LOOP)
+     Pause baada ya kumaliza: sekunde 10
+     ========================================================= */
+  var typingTimer = null;
+  var typingRunId = 0;
+
+  function startQuoteTyping() {
+    var quoteEl  = document.getElementById('quoteText');
+    var cursorEl = document.getElementById('typingCursor');
+    if (!quoteEl || !cursorEl) return;
+
+    /* Cancel previous loop (e.g. when language changes) */
+    typingRunId++;
+    var myRunId = typingRunId;
+    if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+
+    var fullText = t('dash.quote');
+
+    /* Adaptive speed — aim for ~3.6s total typing time */
+    var totalDuration = 3600;
+    var speed = Math.max(14, Math.min(32, Math.round(totalDuration / fullText.length)));
+
+    /* Pause after fully typed — sekunde 10 (10000 ms) */
+    var HOLD_MS = 10000;
+
+    var i = 0;
+
+    function resetAndType() {
+      if (myRunId !== typingRunId) return;
+      quoteEl.textContent = '';
+      cursorEl.classList.remove('is-done');
+      i = 0;
+      typingTimer = setTimeout(step, speed);
+    }
+
+    function step() {
+      if (myRunId !== typingRunId) return;
+
+      if (i >= fullText.length) {
+        cursorEl.classList.add('is-done');
+        /* Tulia sekunde 10, kisha rudia kutoka mwanzo — infinite */
+        typingTimer = setTimeout(resetAndType, HOLD_MS);
+        return;
+      }
+
+      quoteEl.textContent += fullText.charAt(i);
+      i++;
+      typingTimer = setTimeout(step, speed);
+    }
+
+    /* Start first cycle */
+    quoteEl.textContent = '';
+    cursorEl.classList.remove('is-done');
+    typingTimer = setTimeout(step, speed);
+  }
+
+
+  /* =========================================================
+     REAL-TIME DATE & TIME
+     ========================================================= */
+  function twoDigit(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function getRealNow() {
+    var d = new Date();
+    var h = d.getHours();
+    var periodKey;
+    if (h < 12) periodKey = 'marq.periodMorning';
+    else if (h < 17) periodKey = 'marq.periodAfternoon';
+    else if (h < 21) periodKey = 'marq.periodEvening';
+    else periodKey = 'marq.periodNight';
+
+    var start = new Date(d.getFullYear(), 0, 1);
+    var diff = Math.floor((d - start) / 86400000);
+
+    return {
+      date: d,
+      dayName: t('day.' + d.getDay()),
+      dateLong: d.getDate() + ' ' + t('month.' + d.getMonth()) + ' ' + d.getFullYear(),
+      time: twoDigit(d.getHours()) + ':' + twoDigit(d.getMinutes()) + ':' + twoDigit(d.getSeconds()),
+      weekNumber: Math.ceil((diff + start.getDay() + 1) / 7),
+      quarter: Math.floor(d.getMonth() / 3) + 1,
+      periodKey: periodKey
+    };
+  }
+
+  var marqueeTrack = document.getElementById("marqueeTrack");
+
+  function buildMarqueeItems(now) {
+    var parts = [];
+    var sep = '<span class="sep" aria-hidden="true">•</span>';
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__value js-live-clock">' +
+          now.dayName + ' · ' + now.dateLong + ' · ' + now.time +
+        '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.academicYear') + ' :</span>' +
+        '<span class="banner--info__value">' + t('marq.academicYearValue') + '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.directorySource') + ' :</span>' +
+        '<span class="banner--info__value">' + t('marq.directorySourceValue') + '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.buildings') + ' :</span>' +
+        '<span class="banner--info__value">6</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.totalVenues') + ' :</span>' +
+        '<span class="banner--info__value">360</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.support') + ' :</span>' +
+        '<span class="banner--info__value">' + t('marq.supportValue') + '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.week') + ' :</span>' +
+        '<span class="banner--info__value">' + tf('marq.weekValue', { n: now.weekNumber }) + '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.quarter') + ' :</span>' +
+        '<span class="banner--info__value">' + tf('marq.quarterValue', { n: now.quarter }) + '</span>' +
+      '</span>'
+    );
+
+    parts.push(
+      '<span class="banner--info__item">' +
+        '<span class="banner--info__label">' + t('marq.timeOfDay') + ' :</span>' +
+        '<span class="banner--info__value">' + tf('marq.timeOfDayValue', { period: t(now.periodKey) }) + '</span>' +
+      '</span>'
+    );
+
+    return parts.join(sep);
+  }
+
+  function paintMarquee() {
+    var now = getRealNow();
+    var items = buildMarqueeItems(now);
+    var sep = '<span class="sep" aria-hidden="true">•</span>';
+    marqueeTrack.innerHTML = items + sep + items;
+
+    document.title = "MUST Venue Finder — " + now.dayName + ", " +
+                     now.dateLong + " " + now.time;
+  }
+
+  paintMarquee();
+
+  setInterval(function () {
+    var now = getRealNow();
+    var clocks = document.querySelectorAll(".js-live-clock");
+    for (var i = 0; i < clocks.length; i++) {
+      clocks[i].textContent = now.dayName + ' · ' + now.dateLong + ' · ' + now.time;
+    }
+    document.title = "MUST Venue Finder — " + now.dayName + ", " +
+                     now.dateLong + " " + now.time;
+  }, 1000);
+
+  setInterval(paintMarquee, 30000);
+
+
+  /* =========================================================
      VENUE CODE GENERATOR
      ========================================================= */
   function codeRange(prefix, floorLetter, count) {
@@ -2668,12 +3488,12 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   }
 
   /* =========================================================
-     BUILDING DATA  —  with colorName derived from building code
+     BUILDING DATA
      ========================================================= */
   var BUILDINGS = [
     { id:"academic", name:"Academic Block", code:"BLD-ACD",
       color:"#2563EB", colorName:"ACD Royal Blue",
-      desc:"Lecture theatres and tutorial rooms for the main campus.",
+      descKey:"bdesc.academic",
       floors:{
         "Ground Floor": codeRange("LR", "G", 20),
         "First Floor":  codeRange("LR", "1", 20),
@@ -2681,7 +3501,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       }},
     { id:"admin", name:"Administration Block", code:"BLD-ADM",
       color:"#7C3AED", colorName:"ADM Imperial Purple",
-      desc:"Registry, finance, admissions and administrative offices.",
+      descKey:"bdesc.admin",
       floors:{
         "Ground Floor": codeRange("ADM", "G", 20),
         "First Floor":  codeRange("ADM", "1", 20),
@@ -2689,7 +3509,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       }},
     { id:"library", name:"Library Block", code:"BLD-LIB",
       color:"#D97706", colorName:"LIB Amber Gold",
-      desc:"Reading rooms, reference section and the digital resource centre.",
+      descKey:"bdesc.library",
       floors:{
         "Ground Floor": codeRange("LIB", "G", 20),
         "First Floor":  codeRange("LIB", "1", 20),
@@ -2697,7 +3517,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       }},
     { id:"workshop", name:"Workshop Wing", code:"BLD-WKS",
       color:"#DC2626", colorName:"WKS Crimson Red",
-      desc:"Engineering workshops and technical laboratories.",
+      descKey:"bdesc.workshop",
       floors:{
         "Ground Floor": codeRange("WKS", "G", 20),
         "First Floor":  codeRange("WKS", "1", 20),
@@ -2705,7 +3525,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       }},
     { id:"coste", name:"COSTE Wing", code:"BLD-CST",
       color:"#EA580C", colorName:"CST Sunset Orange",
-      desc:"Computer labs and lecture rooms for the college.",
+      descKey:"bdesc.coste",
       floors:{
         "Ground Floor": codeRange("CLR", "G", 20),
         "First Floor":  codeRange("CLR", "1", 20),
@@ -2713,7 +3533,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       }},
     { id:"estate", name:"Estate Wing", code:"BLD-EST",
       color:"#059669", colorName:"EST Emerald Green",
-      desc:"Estate department offices and maintenance stores.",
+      descKey:"bdesc.estate",
       floors:{
         "Ground Floor": codeRange("EST", "G", 20),
         "First Floor":  codeRange("EST", "1", 20),
@@ -2744,51 +3564,86 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
      VENUE DESCRIPTIONS
      ========================================================= */
   var BUILDING_DESCRIPTIONS = {
-    academic: {
-      "Ground Floor": "Spacious ground-floor lecture theatre with tiered seating. Equipped with a ceiling-mounted projector, whiteboard, public address system, and air conditioning.",
-      "First Floor":  "Mid-sized lecture room. Fitted with a smart board, USB-C inputs at the podium, adjustable lighting, and full air conditioning.",
-      "Second Floor": "Tutorial room. Ideal for group discussions, seminars, and revision sessions. Includes a retractable projector screen and writing boards on three walls."
+    en: {
+      academic: {
+        "Ground Floor": "Spacious ground-floor lecture theatre with tiered seating. Equipped with a ceiling-mounted projector, whiteboard, public address system, and air conditioning.",
+        "First Floor":  "Mid-sized lecture room. Fitted with a smart board, USB-C inputs at the podium, adjustable lighting, and full air conditioning.",
+        "Second Floor": "Tutorial room. Ideal for group discussions, seminars, and revision sessions. Includes a retractable projector screen and writing boards on three walls."
+      },
+      admin: {
+        "Ground Floor": "Public service office with a walk-in service counter, waiting area, and secure records storage. Handles student enquiries, transcripts, and general correspondence.",
+        "First Floor":  "Administrative office for department staff. Includes individual workstations, a small meeting corner, and network-connected printing facilities.",
+        "Second Floor": "Senior administrative office with a private meeting room, confidential records storage, and direct telephone lines."
+      },
+      library: {
+        "Ground Floor": "Open reading area with study tables, reference shelving, and generous natural light. Power outlets at every table.",
+        "First Floor":  "Quiet reading room with individual study carrels, task lighting, and dedicated power and network points. Perfect for focused study and exam preparation.",
+        "Second Floor": "Group study room with a large central table, wall-mounted whiteboard, and discussion-friendly layout. Bookable through the library desk."
+      },
+      workshop: {
+        "Ground Floor": "Practical workshop with heavy-duty workbenches, hand tools, and safety equipment for basic fabrication. Safety glasses and overalls required at all times.",
+        "First Floor":  "Technical laboratory with specialised machinery, instrument calibration stations, and lockable tool storage. Supervised access only.",
+        "Second Floor": "Advanced workshop space with material testing equipment, sample storage racks, and a clean workspace for final-year project assembly."
+      },
+      coste: {
+        "Ground Floor": "Computer laboratory with desktop workstations, high-speed network access, and full air conditioning. Timetabled for introductory programming and general computing.",
+        "First Floor":  "Programming laboratory with dual-monitor stations, ergonomic seating, and a local server for development. Timetabled for software engineering and database practicals.",
+        "Second Floor": "Networking and hardware laboratory with rack-mounted equipment, structured cabling stations, and diagnostic tools for hands-on practicals."
+      },
+      estate: {
+        "Ground Floor": "Estate office with a service counter for maintenance requests, walk-in enquiries, and a records area for work orders.",
+        "First Floor":  "Maintenance coordination office with a tools store, handover area for contractor equipment, and a small meeting space for briefings.",
+        "Second Floor": "Estate management office with meeting space for contractor briefings, project planning boards, and long-term project records storage."
+      }
     },
-    admin: {
-      "Ground Floor": "Public service office with a walk-in service counter, waiting area, and secure records storage. Handles student enquiries, transcripts, and general correspondence.",
-      "First Floor":  "Administrative office for department staff. Includes individual workstations, a small meeting corner, and network-connected printing facilities.",
-      "Second Floor": "Senior administrative office with a private meeting room, confidential records storage, and direct telephone lines."
-    },
-    library: {
-      "Ground Floor": "Open reading area with study tables, reference shelving, and generous natural light. Power outlets at every table.",
-      "First Floor":  "Quiet reading room with individual study carrels, task lighting, and dedicated power and network points. Perfect for focused study and exam preparation.",
-      "Second Floor": "Group study room with a large central table, wall-mounted whiteboard, and discussion-friendly layout. Bookable through the library desk."
-    },
-    workshop: {
-      "Ground Floor": "Practical workshop with heavy-duty workbenches, hand tools, and safety equipment for basic fabrication. Safety glasses and overalls required at all times.",
-      "First Floor":  "Technical laboratory with specialised machinery, instrument calibration stations, and lockable tool storage. Supervised access only.",
-      "Second Floor": "Advanced workshop space with material testing equipment, sample storage racks, and a clean workspace for final-year project assembly."
-    },
-    coste: {
-      "Ground Floor": "Computer laboratory with desktop workstations, high-speed network access, and full air conditioning. Timetabled for introductory programming and general computing.",
-      "First Floor":  "Programming laboratory with dual-monitor stations, ergonomic seating, and a local server for development. Timetabled for software engineering and database practicals.",
-      "Second Floor": "Networking and hardware laboratory with rack-mounted equipment, structured cabling stations, and diagnostic tools for hands-on practicals."
-    },
-    estate: {
-      "Ground Floor": "Estate office with a service counter for maintenance requests, walk-in enquiries, and a records area for work orders.",
-      "First Floor":  "Maintenance coordination office with a tools store, handover area for contractor equipment, and a small meeting space for briefings.",
-      "Second Floor": "Estate management office with meeting space for contractor briefings, project planning boards, and long-term project records storage."
+    sw: {
+      academic: {
+        "Ground Floor": "Ukumbi mpana wa mihadhara wa ground floor wenye viti vya ngazi. Una projector iliyowekwa kwenye dari, whiteboard, mfumo wa sauti, na AC.",
+        "First Floor":  "Chumba cha mihadhara cha ukubwa wa kati. Kina smart board, USB-C inputs kwenye podium, mwanga unaobadilika, na AC kamili.",
+        "Second Floor": "Chumba cha tutorial. Kinafaa kwa majadiliano ya vikundi, semina, na vipindi vya marudio. Kina screen ya projector inayoweza kurudi na mbao za kuandika kwenye kuta tatu."
+      },
+      admin: {
+        "Ground Floor": "Ofisi ya huduma kwa umma yenye dawati la huduma, eneo la kusubiri, na hifadhi salama ya kumbukumbu. Inashughulikia maswali ya wanafunzi, transcripts, na mawasiliano ya jumla.",
+        "First Floor":  "Ofisi ya utawala kwa wafanyakazi wa idara. Ina workstation za kibinafsi, kona ndogo ya mikutano, na printa zilizounganishwa kwenye mtandao.",
+        "Second Floor": "Ofisi ya utawala wa ngazi ya juu yenye chumba cha mikutano cha faragha, hifadhi ya kumbukumbu za siri, na simu za moja kwa moja za ndani na nje."
+      },
+      library: {
+        "Ground Floor": "Eneo la kusoma la wazi lenye meza za kusoma, rafu za reference, na mwanga mwingi wa asili. Power outlets kwenye kila meza.",
+        "First Floor":  "Chumba cha kusoma chenye utulivu na carrels za kujisomea, taa za kazi, na power na network points maalum. Nafaa kwa kujisomea kwa umakini na maandalizi ya mitihani.",
+        "Second Floor": "Chumba cha kusoma cha vikundi chenye meza kuu ya kati, whiteboard iliyowekwa ukutani, na mpangilio unaofaa majadiliano kwa wanafunzi hadi 20. Kinabukiniwa kupitia dawati la maktaba."
+      },
+      workshop: {
+        "Ground Floor": "Warsha ya vitendo yenye workbenches nzito, zana za mkono, na vifaa vya usalama kwa uundaji wa kimsingi. Miwani ya usalama na overalls zinahitajika wakati wote.",
+        "First Floor":  "Maabara ya kiufundi yenye mashine maalum, vituo vya calibration vya vyombo, na hifadhi ya zana inayofungwa. Ufikiaji chini ya usimamizi tu.",
+        "Second Floor": "Warsha ya juu yenye vifaa vya kupima vifaa, racks za kuhifadhi sampuli, na eneo safi la kazi kwa kukusanya miradi ya mwaka wa mwisho."
+      },
+      coste: {
+        "Ground Floor": "Maabara ya kompyuta yenye workstation 40 za desktop, ufikiaji wa mtandao wa kasi, na AC kamili. Imepangwa kwa upangaji wa kuanzia na kompyuta ya jumla.",
+        "First Floor":  "Maabara ya upangaji yenye vituo vya monitor mbili, viti vya ergonomic, na server ya ndani kwa maendeleo. Imepangwa kwa uhandisi wa programu na practicals za database.",
+        "Second Floor": "Maabara ya networking na hardware yenye vifaa vilivyowekwa kwenye rack, vituo vya structured cabling, na zana za uchunguzi kwa practicals za vitendo."
+      },
+      estate: {
+        "Ground Floor": "Ofisi ya estate yenye dawati la huduma kwa maombi ya matengenezo, maswali ya kufika, na eneo la kumbukumbu kwa order za kazi.",
+        "First Floor":  "Ofisi ya uratibu wa matengenezo yenye bohari ya zana, eneo la kukabidhi vifaa vya contractor, na nafasi ndogo ya mikutano kwa briefings.",
+        "Second Floor": "Ofisi ya usimamizi wa estate yenye nafasi ya mikutano kwa briefings za contractor, mbao za kupanga miradi, na hifadhi ya kumbukumbu za miradi ya muda mrefu."
+      }
     }
   };
 
   function getVenueDescription(buildingId, floor) {
-    var map = BUILDING_DESCRIPTIONS[buildingId];
+    var langMap = BUILDING_DESCRIPTIONS[currentLang] || BUILDING_DESCRIPTIONS.en;
+    var map = langMap[buildingId];
     if (map && map[floor]) return map[floor];
-    return "A well-equipped venue suitable for lectures, practicals, and university activities.";
+    return "";
   }
 
   function getVenueWing(venueName) {
     var match = venueName.match(/\d+/);
-    if (!match) return "Central Wing";
+    if (!match) return currentLang === 'sw' ? "Wing ya Kati" : "Central Wing";
     var num = parseInt(match[0], 10);
-    if (num <= 7)  return "East Wing";
-    if (num <= 14) return "Central Wing";
-    return "West Wing";
+    if (num <= 7)  return currentLang === 'sw' ? "Wing ya Mashariki" : "East Wing";
+    if (num <= 14) return currentLang === 'sw' ? "Wing ya Kati" : "Central Wing";
+    return currentLang === 'sw' ? "Wing ya Magharibi" : "West Wing";
   }
 
   function buildVenuePath(v) {
@@ -2798,9 +3653,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   function buildVenueImages(v) {
     var seed = encodeURIComponent(v.name.replace(/\s+/g, "-"));
     return [
-      { url: "https://picsum.photos/seed/" + seed + "-entrance/640/480", caption: "Main entrance" },
-      { url: "https://picsum.photos/seed/" + seed + "-interior/640/480", caption: "Interior view" },
-      { url: "https://picsum.photos/seed/" + seed + "-seating/640/480",  caption: "Seating area" }
+      { url: "https://picsum.photos/seed/" + seed + "-entrance/640/480", captionKey: "vd.photoEntrance" },
+      { url: "https://picsum.photos/seed/" + seed + "-interior/640/480", captionKey: "vd.photoInterior" },
+      { url: "https://picsum.photos/seed/" + seed + "-seating/640/480",  captionKey: "vd.photoSeating" }
     ];
   }
 
@@ -2813,43 +3668,27 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
      STUDENT SUPPORT SERVICES
      ========================================================= */
   var SUPPORT_SERVICES = [
-    { title:"Counselling & Guidance", venue:"ADM 110" },
-    { title:"Health Services", venue:"EST G01" },
-    { title:"Career Guidance & Placement", venue:"ADM 205" },
-    { title:"Financial Aid & Scholarships", venue:"ADM 108" },
-    { title:"Academic Advising", venue:"LIB 205" },
-    { title:"International Students Desk", venue:"ADM 101" },
-    { title:"Library Help Desk", venue:"LIB G01" }
+    { titleKey:"sup.counselling", venue:"ADM 110" },
+    { titleKey:"sup.health", venue:"EST G01" },
+    { titleKey:"sup.career", venue:"ADM 205" },
+    { titleKey:"sup.financial", venue:"ADM 108" },
+    { titleKey:"sup.advising", venue:"LIB 205" },
+    { titleKey:"sup.international", venue:"ADM 101" },
+    { titleKey:"sup.library", venue:"LIB G01" }
   ];
 
   /* =========================================================
      ACADEMIC CALENDAR
      ========================================================= */
   var ACADEMIC_CALENDAR = [
-    { date:"Sep 2026", from:"2026-09-01", to:"2026-09-30",
-      event:"Semester I — Registration & Orientation",
-      note:"Registration kwa wanafunzi wote na orientation ya freshers." },
-    { date:"Oct 2026", from:"2026-10-01", to:"2026-10-31",
-      event:"Teaching Period Begins",
-      note:"Madarasa yanaanza kwa semester ya kwanza." },
-    { date:"Nov 2026", from:"2026-11-01", to:"2026-11-30",
-      event:"CAT 1 & Mid-Semester Assignments",
-      note:"Continuous Assessment Test ya kwanza." },
-    { date:"Dec 2026", from:"2026-12-01", to:"2026-12-20",
-      event:"Final Examinations — Semester I",
-      note:"Mitihani ya mwisho wa semester ya kwanza." },
-    { date:"Dec 2026", from:"2026-12-21", to:"2026-12-31",
-      event:"End of Semester Break",
-      note:"Mapumziko ya mwisho wa semester." },
-    { date:"Jan 2027", from:"2027-01-01", to:"2027-01-31",
-      event:"Semester II Begins",
-      note:"Usajili na kuanza kwa semester ya pili." },
-    { date:"Apr 2027", from:"2027-04-01", to:"2027-04-30",
-      event:"Mid-Semester Break",
-      note:"Mapumziko ya katikati ya semester." },
-    { date:"Jun 2027", from:"2027-06-01", to:"2027-06-30",
-      event:"Final Examinations — Semester II",
-      note:"Mitihani ya mwisho wa mwaka wa masomo." }
+    { dateKey:"Sep 2026", from:"2026-09-01", to:"2026-09-30", n:1 },
+    { dateKey:"Oct 2026", from:"2026-10-01", to:"2026-10-31", n:2 },
+    { dateKey:"Nov 2026", from:"2026-11-01", to:"2026-11-30", n:3 },
+    { dateKey:"Dec 2026", from:"2026-12-01", to:"2026-12-20", n:4 },
+    { dateKey:"Dec 2026", from:"2026-12-21", to:"2026-12-31", n:5 },
+    { dateKey:"Jan 2027", from:"2027-01-01", to:"2027-01-31", n:6 },
+    { dateKey:"Apr 2027", from:"2027-04-01", to:"2027-04-30", n:7 },
+    { dateKey:"Jun 2027", from:"2027-06-01", to:"2027-06-30", n:8 }
   ];
 
   function renderSupport() {
@@ -2863,11 +3702,13 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       return '' +
         '<tr>' +
           '<td>' +
-            '<span class="support-service">' + esc(s.title) + '</span>' +
+            '<span class="support-service">' + esc(t(s.titleKey)) + '</span>' +
           '</td>' +
           '<td>' + esc(location) + '</td>' +
           '<td>' +
-            '<span class="action-link" data-support-venue="' + esc(s.venue) + '">Open</span>' +
+            '<span class="action-link" data-support-venue="' + esc(s.venue) + '">' +
+              esc(t('support.open')) +
+            '</span>' +
           '</td>' +
         '</tr>';
     }).join("");
@@ -2886,13 +3727,13 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
       return '' +
         '<tr class="' + (isCurrent ? 'is-current' : '') + '">' +
-          '<td class="cal-period">' + esc(item.date) + '</td>' +
+          '<td class="cal-period">' + esc(item.dateKey) + '</td>' +
           '<td>' +
-            '<div class="cal-event">' + esc(item.event) + '</div>' +
-            '<span class="cal-event__note">' + esc(item.note) + '</span>' +
+            '<div class="cal-event">' + esc(t('cal.ev' + item.n + '.name')) + '</div>' +
+            '<span class="cal-event__note">' + esc(t('cal.ev' + item.n + '.note')) + '</span>' +
           '</td>' +
           '<td>' +
-            (isCurrent ? '<span class="cal-badge">Current</span>' : '—') +
+            (isCurrent ? '<span class="cal-badge">' + esc(t('cal.current')) + '</span>' : '—') +
           '</td>' +
         '</tr>';
     }).join("");
@@ -2939,6 +3780,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     sidebar:        document.getElementById("sidebar"),
     sidebarNav:     document.getElementById("sidebarNav"),
     menuBtn:        document.getElementById("menuBtn"),
+    notifBtn:       document.getElementById("notifBtn"),
+    notifCard:      document.getElementById("notifCard"),
     searchInput:    document.getElementById("searchInput"),
     searchResults:  document.getElementById("searchResults"),
     resultList:     document.getElementById("resultList"),
@@ -2987,7 +3830,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     visits:        {},
     favourites:    [],
     recentSearches:[],
-    currentVenue:  null
+    currentVenue:  null,
+    activeNav:     'home',
+    activeBuilding:null
   };
 
   function loadState() {
@@ -2995,11 +3840,11 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       var v = localStorage.getItem("must:visits");
       var f = localStorage.getItem("must:favourites");
       var r = localStorage.getItem("must:recentSearches");
-      var t = localStorage.getItem("must:theme");
+      var t2 = localStorage.getItem("must:theme");
       if (v) state.visits = JSON.parse(v) || {};
       if (f) state.favourites = JSON.parse(f) || [];
       if (r) state.recentSearches = JSON.parse(r) || [];
-      if (t === "dark") document.body.classList.add("dark");
+      if (t2 === "dark") document.body.classList.add("dark");
     } catch (e) {}
   }
 
@@ -3064,11 +3909,11 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   function isFavourite(name) { return state.favourites.indexOf(name) > -1; }
 
   function debounce(fn, ms) {
-    var t = null;
+    var tmr = null;
     return function () {
       var args = arguments, ctx = this;
-      clearTimeout(t);
-      t = setTimeout(function () { fn.apply(ctx, args); }, ms);
+      clearTimeout(tmr);
+      tmr = setTimeout(function () { fn.apply(ctx, args); }, ms);
     };
   }
 
@@ -3094,7 +3939,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     var isDark = document.body.classList.contains("dark");
     try { localStorage.setItem("must:theme", isDark ? "dark" : "light"); } catch (e) {}
     updateThemeToggleUI();
-    showToast(isDark ? "Dark mode on" : "Light mode on", "info");
+    showToast(isDark ? t('toast.darkOn') : t('toast.lightOn'), "info");
   }
 
   function updateThemeToggleUI() {
@@ -3118,40 +3963,40 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   function renderSidebar() {
     var html = "";
 
-    html += '<div class="nav-section">Overview</div>';
+    html += '<div class="nav-section">' + esc(t('nav.overview')) + '</div>';
 
     html += navItemHTML({
       nav: "home",
       icon: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",
-      label: "Dashboard"
+      label: t('nav.dashboard')
     });
 
     html += navItemHTML({
       nav: "all-venues",
       icon: "M4 20V7l8-4 8 4v13M9 20v-6h6v6",
-      label: "All Venues"
+      label: t('nav.allVenues')
     });
 
     html += navItemHTML({
       nav: "support",
       icon: "M8 12h8M12 8v8M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0z",
-      label: "Student Support"
+      label: t('nav.studentSupport')
     });
 
     html += navItemHTML({
       nav: "calendar",
       icon: "M4 5h16v15H4zM8 3v4M16 3v4M4 9h16",
-      label: "Academic Calendar"
+      label: t('nav.academicCalendar')
     });
 
-    html += '<div class="nav-section">Buildings</div>';
+    html += '<div class="nav-section">' + esc(t('nav.buildings')) + '</div>';
 
     html += '<div class="nav-group" id="navGroupBuildings">' +
               '<a class="nav-item" data-nav="buildings-toggle">' +
                 '<span class="nav-item__icon">' +
                   '<svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-5h6v5"/></svg>' +
                 '</span>' +
-                '<span class="nav-item__label">All Buildings</span>' +
+                '<span class="nav-item__label">' + esc(t('nav.allBuildings')) + '</span>' +
                 '<svg class="nav-item__chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>' +
               '</a>' +
               '<div class="nav-children">' +
@@ -3164,33 +4009,49 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
               '</div>' +
             '</div>';
 
-    html += '<div class="nav-section">Account</div>';
+    html += '<div class="nav-section">' + esc(t('nav.account')) + '</div>';
 
     html += navItemHTML({
       nav: "favourites",
       icon: "M12 2l3 6.9 7.5.6-5.7 5 1.7 7.5L12 18.4 5.5 22l1.7-7.5-5.7-5 7.5-.6z",
-      label: "My Favourites"
+      label: t('nav.myFavourites')
     });
 
     html += navItemHTML({
       nav: "news",
       icon: "M4 5h16v14H4zM8 9h8M8 13h5",
-      label: "News"
+      label: t('nav.news')
     });
 
-    html += '<div class="nav-section">Settings</div>';
+    html += '<div class="nav-section">' + esc(t('nav.settings')) + '</div>';
 
     html += '<a class="nav-item nav-item--toggle" id="sidebarThemeToggle" role="switch" aria-checked="false" tabindex="0">' +
               '<span class="nav-item__icon" id="sidebarThemeIcon">' +
                 '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' +
               '</span>' +
-              '<span class="nav-item__label">Dark mode</span>' +
+              '<span class="nav-item__label">' + esc(t('nav.darkMode')) + '</span>' +
               '<span class="theme-switch" aria-hidden="true"></span>' +
             '</a>';
 
+    html += '<a class="nav-item nav-item--lang" id="sidebarLangToggle" tabindex="0" role="group" aria-label="Language">' +
+              '<span class="nav-item__icon">' +
+                '<svg viewBox="0 0 24 24">' +
+                  '<circle cx="12" cy="12" r="9"/>' +
+                  '<path d="M3 12h18"/>' +
+                  '<path d="M12 3c2.5 3 2.5 15 0 18"/>' +
+                  '<path d="M12 3c-2.5 3-2.5 15 0 18"/>' +
+                '</svg>' +
+              '</span>' +
+              '<span class="nav-item__label">' + esc(t('nav.language')) + '</span>' +
+              '<span class="lang-switch">' +
+                '<span class="lang-switch__opt' + (currentLang === 'en' ? ' is-active' : '') + '" data-lang="en">EN</span>' +
+                '<span class="lang-switch__opt' + (currentLang === 'sw' ? ' is-active' : '') + '" data-lang="sw">SW</span>' +
+              '</span>' +
+            '</a>';
+
     el.sidebarNav.innerHTML = html;
-    setActiveNav("home");
     updateThemeToggleUI();
+    updateLangSwitchUI();
 
     var toggle = document.getElementById("sidebarThemeToggle");
     if (toggle) {
@@ -3222,6 +4083,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   }
 
   function setActiveNav(nav, buildingId) {
+    state.activeNav = nav;
+    state.activeBuilding = buildingId || null;
+
     var items = el.sidebarNav.querySelectorAll(".nav-item, .nav-child");
     for (var i = 0; i < items.length; i++) items[i].classList.remove("is-active");
 
@@ -3244,13 +4108,14 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     el.bldTableBody.innerHTML = BUILDINGS.map(function (b) {
       var fc = countFloors(b);
       var rc = countVenues(b);
+
       return '' +
         '<tr title="' + esc(b.colorName) + '">' +
           '<td class="bld-name-cell">' + esc(b.name) + '</td>' +
           '<td class="bld-code-cell">' + esc(b.code) + '</td>' +
-          '<td><span class="stat-pill stat-pill--floors">' + fc + ' floors</span></td>' +
-          '<td><span class="stat-pill stat-pill--rooms">' + rc + ' rooms</span></td>' +
-          '<td><span class="action-link" data-open="' + b.id + '">Open</span></td>' +
+          '<td><span class="stat-pill stat-pill--floors">' + fc + ' ' + esc(t('bld.floorsWord')) + '</span></td>' +
+          '<td><span class="stat-pill stat-pill--rooms">' + rc + ' ' + esc(t('bld.roomsWord')) + '</span></td>' +
+          '<td><span class="action-link" data-open="' + b.id + '">' + esc(t('bld.open')) + '</span></td>' +
         '</tr>';
     }).join("");
   }
@@ -3284,8 +4149,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     if (!entries.length) {
       el.oftenContainer.innerHTML =
         '<div class="list-empty">' +
-          '<strong>No venues visited yet</strong>' +
-          'Open any venue from a building to start building your history here.' +
+          '<strong>' + esc(t('often.emptyTitle')) + '</strong>' +
+          esc(t('often.emptyText')) +
         '</div>';
       return;
     }
@@ -3294,15 +4159,19 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       '<ul class="list">' +
         entries.map(function (e) {
           var v = getVenue(e.name);
+          var visitWord = e.count === 1 ? t('often.visit') : t('often.visits');
+
           return '' +
             '<li class="list-row">' +
               '<div class="list-row__main">' +
                 '<div class="list-row__name">' + esc(v.name) + '</div>' +
                 '<div class="list-row__meta">' + esc(v.buildingName) + ' · ' + esc(v.floor) + '</div>' +
               '</div>' +
-              '<span class="list-row__badge">' + e.count + ' visit' + (e.count === 1 ? '' : 's') + '</span>' +
+              '<span class="list-row__badge">' + e.count + ' ' + esc(visitWord) + '</span>' +
               '<div class="list-row__actions">' +
-                '<button class="chip-btn chip-btn--solid" data-visit="' + esc(v.name) + '" type="button">Open</button>' +
+                '<button class="chip-btn chip-btn--solid" data-visit="' + esc(v.name) + '" type="button">' +
+                  esc(t('often.open')) +
+                '</button>' +
               '</div>' +
             '</li>';
         }).join("") +
@@ -3332,9 +4201,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   function toggleFavourite(name) {
     if (isFavourite(name)) {
       removeFavourite(name);
-      showToast(name + " removed from favourites", "info");
+      showToast(tf('toast.removedFav', { name: name }), "info");
     } else {
-      if (addFavourite(name)) showToast(name + " added to favourites", "success");
+      if (addFavourite(name)) showToast(tf('toast.addedFav', { name: name }), "success");
     }
   }
 
@@ -3345,8 +4214,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     if (!entries.length) {
       el.favContainer.innerHTML =
         '<div class="list-empty">' +
-          '<strong>No favourite venues yet</strong>' +
-          'Add one above, or click the ☆ star on any room chip inside a building.' +
+          '<strong>' + esc(t('fav.emptyTitle')) + '</strong>' +
+          esc(t('fav.emptyText')) +
         '</div>';
       return;
     }
@@ -3361,7 +4230,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
                 '<div class="list-row__meta">' + esc(v.buildingName) + ' · ' + esc(v.floor) + '</div>' +
               '</div>' +
               '<div class="list-row__actions">' +
-                '<button class="chip-btn" data-locate="' + esc(v.name) + '" data-b="' + v.buildingId + '" type="button">Locate</button>' +
+                '<button class="chip-btn" data-locate="' + esc(v.name) + '" data-b="' + v.buildingId + '" type="button">' +
+                  esc(t('fav.locate')) +
+                '</button>' +
                 '<button class="chip-btn chip-btn--icon chip-btn--danger" data-remove-fav="' + esc(v.name) + '" type="button" aria-label="Remove favourite">×</button>' +
               '</div>' +
             '</li>';
@@ -3396,7 +4267,10 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     el.detailBadge.setAttribute("title", b.colorName);
 
     el.detailTitle.textContent = b.name;
-    el.detailSub.textContent = b.desc + " · " + floors.length + " floors · " + countVenues(b) + " venues";
+    el.detailSub.textContent =
+      t(b.descKey) + " · " +
+      floors.length + " " + t('bld.floorsWord') + " · " +
+      countVenues(b) + " " + t('bld.venuesWord');
 
     el.detailFloors.innerHTML = floors.map(function (floor) {
       var list = b.floors[floor];
@@ -3446,7 +4320,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   function closeBuilding() {
     el.detailCard.classList.remove("is-open");
     closeVenue();
-    el.crumbCurrent.textContent = "Dashboard";
+    el.crumbCurrent.textContent = t('toolbar.dashboard');
     setActiveNav("home");
   }
 
@@ -3485,8 +4359,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     el.venueGallery.innerHTML = images.map(function (img) {
       return '' +
         '<figure class="venue-photo">' +
-          '<img src="' + img.url + '" alt="' + esc(v.name) + ' — ' + esc(img.caption) + '" loading="lazy">' +
-          '<figcaption>' + esc(img.caption) + '</figcaption>' +
+          '<img src="' + img.url + '" alt="' + esc(v.name) + ' — ' + esc(t(img.captionKey)) + '" loading="lazy">' +
+          '<figcaption>' + esc(t(img.captionKey)) + '</figcaption>' +
         '</figure>';
     }).join("");
 
@@ -3549,7 +4423,8 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
     if (!searchMatches.length) {
       el.resultList.innerHTML =
-        '<li class="no-results">No venues match <b>' + esc(raw.trim()) + '</b></li>';
+        '<li class="no-results">' + esc(t('search.noMatch')) +
+        ' <b>' + esc(raw.trim()) + '</b></li>';
       el.warningBanner.hidden = false;
       activeIndex = -1;
       return;
@@ -3564,7 +4439,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
             '<div class="result-row__name">' + esc(v.name) + '</div>' +
             '<div class="result-row__path">' + esc(v.buildingName) + ' · ' + esc(v.floor) + '</div>' +
           '</div>' +
-          '<span class="result-row__go">Locate →</span>' +
+          '<span class="result-row__go">' + esc(t('search.locate')) + ' →</span>' +
         '</li>';
     }).join("");
 
@@ -3612,12 +4487,12 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
       navigator.share({ title: v.name, text: text, url: url }).catch(function () {});
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(text + "\n" + url).then(function () {
-        showToast("Venue link copied to clipboard", "success");
+        showToast(t('toast.linkCopied'), "success");
       }).catch(function () {
-        showToast("Could not copy link", "error");
+        showToast(t('toast.copyFailed'), "error");
       });
     } else {
-      showToast("Sharing is not supported on this device", "error");
+      showToast(t('toast.shareUnsupported'), "error");
     }
   }
 
@@ -3627,9 +4502,26 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
   }
 
   /* =========================================================
+     NOTIFICATION BELL → scroll to notifications card
+     (hakuna border, hakuna hover, hakuna glow)
+     ========================================================= */
+  function scrollToNotifications() {
+    if (!el.notifCard) return;
+    el.notifCard.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* =========================================================
      EVENT HANDLERS
      ========================================================= */
   function handleSidebarClick(e) {
+    var langOpt = e.target.closest(".lang-switch__opt");
+    if (langOpt) {
+      e.preventDefault();
+      e.stopPropagation();
+      setLang(langOpt.getAttribute("data-lang"));
+      return;
+    }
+
     var toggle = e.target.closest('.nav-item[data-nav="buildings-toggle"]');
     if (toggle) {
       e.preventDefault();
@@ -3641,6 +4533,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     var item = e.target.closest(".nav-item");
     if (item) {
       if (item.id === "sidebarThemeToggle") return;
+      if (item.id === "sidebarLangToggle") return;
 
       var nav = item.dataset.nav;
       if (!nav) return;
@@ -3713,7 +4606,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     var removeBtn = e.target.closest("[data-remove-fav]");
     if (removeBtn) {
       removeFavourite(removeBtn.dataset.removeFav);
-      showToast("Removed from favourites", "info");
+      showToast(t('toast.removedFromFav'), "info");
       return;
     }
     var locateBtn = e.target.closest("[data-locate]");
@@ -3731,7 +4624,7 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     if (!target) return;
     var v = getVenue(target.dataset.supportVenue);
     if (!v) {
-      showToast("Venue info not available for this service", "error");
+      showToast(t('toast.supportNotAvailable'), "error");
       return;
     }
     openBuilding(v.buildingId, { room: v.name, scroll: false });
@@ -3746,18 +4639,18 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
 
     var v = getVenue(raw);
     if (!v) {
-      setFavMsg('No venue found with the code "' + raw + '".', "error");
-      showToast("Venue not found", "error");
+      setFavMsg(tf('favForm.notFound', { code: raw }), "error");
+      showToast(t('toast.venueNotFound'), "error");
       return;
     }
     if (isFavourite(v.name)) {
-      setFavMsg(v.name + " is already in your favourites.", "error");
+      setFavMsg(tf('favForm.already', { name: v.name }), "error");
       return;
     }
 
     addFavourite(v.name);
-    setFavMsg(v.name + " added to favourites.", "ok");
-    showToast(v.name + " added to favourites", "success");
+    setFavMsg(tf('favForm.added', { name: v.name }), "ok");
+    showToast(tf('toast.addedFav', { name: v.name }), "success");
     el.favInput.value = "";
   }
 
@@ -3871,7 +4764,10 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
      INIT
      ========================================================= */
   function init() {
+    loadLang();
     loadState();
+
+    applyI18n();
 
     renderSidebar();
     renderBuildingsTable();
@@ -3881,6 +4777,9 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     renderFavourites();
 
     animateDashboardStats();
+
+    /* Start the typewriter quote (infinite loop, pause 10s) */
+    startQuoteTyping();
 
     el.sidebarNav.addEventListener("click", handleSidebarClick);
     el.bldTableBody.addEventListener("click", handleBuildingTableClick);
@@ -3902,6 +4801,10 @@ body.dark .toast { border-color: transparent; border-left-color: var(--brand); c
     el.venuePrintBtn.addEventListener("click", handlePrint);
 
     el.menuBtn.addEventListener("click", toggleSidebar);
+
+    if (el.notifBtn) {
+      el.notifBtn.addEventListener("click", scrollToNotifications);
+    }
 
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("keydown", handleDocumentKeydown);
